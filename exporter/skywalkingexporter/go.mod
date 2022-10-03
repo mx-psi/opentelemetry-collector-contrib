@@ -7,7 +7,7 @@ require (
 	github.com/open-telemetry/opentelemetry-collector-contrib/internal/coreinternal v0.60.0
 	github.com/stretchr/testify v1.8.0
 	go.opentelemetry.io/collector v0.60.0
-	go.opentelemetry.io/collector/pdata v0.60.0
+	go.opentelemetry.io/collector/pdata v0.61.0
 	go.opentelemetry.io/collector/semconv v0.60.0
 	go.uber.org/atomic v1.10.0
 	google.golang.org/grpc v1.49.0
