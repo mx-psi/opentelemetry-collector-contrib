@@ -4,8 +4,8 @@ go 1.18
 
 require (
 	github.com/open-telemetry/opentelemetry-collector-contrib/internal/common v0.60.0
-	github.com/shirou/gopsutil/v3 v3.22.8
-	github.com/stretchr/testify v1.8.0
+	github.com/shirou/gopsutil/v3 v3.22.10
+	github.com/stretchr/testify v1.8.1
 	github.com/testcontainers/testcontainers-go v0.14.0
 	go.opentelemetry.io/collector v0.60.0
 	go.opentelemetry.io/collector/pdata v0.60.0
