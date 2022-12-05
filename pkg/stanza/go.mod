@@ -16,7 +16,7 @@ require (
 	go.opentelemetry.io/collector/pdata v0.64.2-0.20221110222631-20e3aac00413
 	go.uber.org/atomic v1.10.0
 	go.uber.org/multierr v1.8.0
-	go.uber.org/zap v1.23.0
+	go.uber.org/zap v1.24.0
 	golang.org/x/sys v0.0.0-20220919091848-fb04ddd9f9c8
 	golang.org/x/text v0.4.0
 	gonum.org/v1/gonum v0.12.0
