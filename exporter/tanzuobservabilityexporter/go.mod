@@ -6,7 +6,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/internal/coreinternal v0.64.0
 	github.com/stretchr/testify v1.8.1
-	github.com/wavefronthq/wavefront-sdk-go v0.10.4
+	github.com/wavefronthq/wavefront-sdk-go v0.12.0
 	go.opentelemetry.io/collector v0.64.2-0.20221110222631-20e3aac00413
 	go.opentelemetry.io/collector/pdata v0.64.2-0.20221110222631-20e3aac00413
 	go.opentelemetry.io/collector/semconv v0.64.2-0.20221110222631-20e3aac00413
