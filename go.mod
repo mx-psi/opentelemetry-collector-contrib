@@ -168,7 +168,7 @@ require (
 	go.opentelemetry.io/collector/processor/batchprocessor v0.64.2-0.20221110222631-20e3aac00413
 	go.opentelemetry.io/collector/processor/memorylimiterprocessor v0.64.2-0.20221110222631-20e3aac00413
 	go.opentelemetry.io/collector/receiver/otlpreceiver v0.64.2-0.20221110222631-20e3aac00413
-	go.uber.org/multierr v1.8.0
+	go.uber.org/multierr v1.10.0
 	golang.org/x/sys v0.1.0
 )
 
