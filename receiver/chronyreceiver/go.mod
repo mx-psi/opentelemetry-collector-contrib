@@ -8,7 +8,7 @@ require (
 	github.com/tilinna/clock v1.1.0
 	go.opentelemetry.io/collector v0.64.2-0.20221110222631-20e3aac00413
 	go.opentelemetry.io/collector/pdata v0.64.2-0.20221110222631-20e3aac00413
-	go.uber.org/multierr v1.8.0
+	go.uber.org/multierr v1.10.0
 )
 
 require (
