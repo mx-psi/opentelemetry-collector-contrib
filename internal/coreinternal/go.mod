@@ -6,10 +6,10 @@ require (
 	github.com/antonmedv/expr v1.9.0
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
 	github.com/spf13/cast v1.5.0
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.2
 	go.opentelemetry.io/collector v0.64.2-0.20221110222631-20e3aac00413
 	go.opentelemetry.io/collector/pdata v0.64.2-0.20221110222631-20e3aac00413
-	go.opentelemetry.io/collector/semconv v0.64.2-0.20221110222631-20e3aac00413
+	go.opentelemetry.io/collector/semconv v0.75.0
 	go.uber.org/zap v1.23.0
 )
 
