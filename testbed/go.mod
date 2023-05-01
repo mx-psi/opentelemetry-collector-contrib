@@ -25,8 +25,8 @@ require (
 	github.com/open-telemetry/opentelemetry-collector-contrib/testbed/mockdatareceivers/mockawsxrayreceiver v0.64.0
 	github.com/prometheus/common v0.37.0
 	github.com/prometheus/prometheus v0.38.0
-	github.com/shirou/gopsutil/v3 v3.22.10
-	github.com/stretchr/testify v1.8.1
+	github.com/shirou/gopsutil/v3 v3.23.4
+	github.com/stretchr/testify v1.8.2
 	go.opentelemetry.io/collector v0.64.2-0.20221110222631-20e3aac00413
 	go.opentelemetry.io/collector/exporter/loggingexporter v0.64.2-0.20221110222631-20e3aac00413
 	go.opentelemetry.io/collector/exporter/otlpexporter v0.64.2-0.20221110222631-20e3aac00413
@@ -181,6 +181,7 @@ require (
 	github.com/prometheus/statsd_exporter v0.22.7 // indirect
 	github.com/rs/cors v1.8.2 // indirect
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.9 // indirect
+	github.com/shoenig/go-m1cpu v0.1.5 // indirect
 	github.com/signalfx/com_signalfx_metrics_protobuf v0.0.3 // indirect
 	github.com/signalfx/gohistogram v0.0.0-20160107210732-1ccfd2ff5083 // indirect
 	github.com/signalfx/golib/v3 v3.3.46 // indirect
@@ -196,8 +197,8 @@ require (
 	github.com/spf13/viper v1.13.0 // indirect
 	github.com/subosito/gotenv v1.4.1 // indirect
 	github.com/tinylib/msgp v1.1.0 // indirect
-	github.com/tklauser/go-sysconf v0.3.10 // indirect
-	github.com/tklauser/numcpus v0.4.0 // indirect
+	github.com/tklauser/go-sysconf v0.3.11 // indirect
+	github.com/tklauser/numcpus v0.6.0 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
 	github.com/vultr/govultr/v2 v2.17.2 // indirect
@@ -218,7 +219,7 @@ require (
 	golang.org/x/mod v0.6.0 // indirect
 	golang.org/x/net v0.1.0 // indirect
 	golang.org/x/oauth2 v0.1.0 // indirect
-	golang.org/x/sys v0.1.0 // indirect
+	golang.org/x/sys v0.7.0 // indirect
 	golang.org/x/term v0.1.0 // indirect
 	golang.org/x/time v0.0.0-20220722155302-e5dcc9cfc0b9 // indirect
 	golang.org/x/tools v0.2.0 // indirect
