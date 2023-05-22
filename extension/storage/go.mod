@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/jackc/pgx/v4 v4.17.2
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.3
 	go.etcd.io/bbolt v1.3.6
 	go.opentelemetry.io/collector v0.64.2-0.20221110222631-20e3aac00413
 	go.uber.org/zap v1.23.0
