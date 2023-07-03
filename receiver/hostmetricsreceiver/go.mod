@@ -5,14 +5,14 @@ go 1.18
 require (
 	github.com/leoluk/perflib_exporter v0.2.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/internal/coreinternal v0.64.0
-	github.com/shirou/gopsutil/v3 v3.22.10
-	github.com/stretchr/testify v1.8.1
+	github.com/shirou/gopsutil/v3 v3.23.6
+	github.com/stretchr/testify v1.8.4
 	go.opentelemetry.io/collector v0.64.2-0.20221110222631-20e3aac00413
 	go.opentelemetry.io/collector/pdata v0.64.2-0.20221110222631-20e3aac00413
 	go.opentelemetry.io/collector/semconv v0.64.2-0.20221110222631-20e3aac00413
 	go.uber.org/multierr v1.8.0
 	go.uber.org/zap v1.23.0
-	golang.org/x/sys v0.0.0-20220919091848-fb04ddd9f9c8
+	golang.org/x/sys v0.9.0
 )
 
 require (
@@ -47,12 +47,13 @@ require (
 	github.com/prometheus/common v0.37.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/prometheus/statsd_exporter v0.22.7 // indirect
+	github.com/shoenig/go-m1cpu v0.1.6 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.5.0 // indirect
-	github.com/tklauser/go-sysconf v0.3.10 // indirect
-	github.com/tklauser/numcpus v0.4.0 // indirect
-	github.com/yusufpapurcu/wmi v1.2.2 // indirect
+	github.com/tklauser/go-sysconf v0.3.11 // indirect
+	github.com/tklauser/numcpus v0.6.0 // indirect
+	github.com/yusufpapurcu/wmi v1.2.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/collector/processor/batchprocessor v0.64.2-0.20221110222631-20e3aac00413 // indirect
 	go.opentelemetry.io/contrib/propagators/b3 v1.11.1 // indirect
