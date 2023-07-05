@@ -13,12 +13,12 @@ require (
 )
 
 require (
-	cloud.google.com/go v0.110.0 // indirect
+	cloud.google.com/go v0.110.2 // indirect
 	cloud.google.com/go/compute v1.19.3 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/logging v1.7.0 // indirect
-	cloud.google.com/go/longrunning v0.4.1 // indirect
-	cloud.google.com/go/monitoring v1.13.0 // indirect
+	cloud.google.com/go/longrunning v0.5.0 // indirect
+	cloud.google.com/go/monitoring v1.15.1 // indirect
 	cloud.google.com/go/trace v1.9.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace v1.15.2 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.39.2 // indirect
