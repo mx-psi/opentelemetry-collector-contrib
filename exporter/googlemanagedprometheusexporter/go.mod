@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/collector v0.39.2
-	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/collector/googlemanagedprometheus v0.39.2
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/collector/googlemanagedprometheus v0.40.1
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/stretchr/testify v1.8.4
 	go.opentelemetry.io/collector v0.80.1-0.20230629144634-c3f70bd1f8ea
