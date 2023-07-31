@@ -257,12 +257,12 @@ go.opentelemetry.io/collector/component v0.80.1-0.20230629144634-c3f70bd1f8ea h1
 go.opentelemetry.io/collector/component v0.80.1-0.20230629144634-c3f70bd1f8ea/go.mod h1:90XoIDfewpei6xv5OjA2qBRMdjeZG4kuatCNtZ2342E=
 go.opentelemetry.io/collector/config/confignet v0.80.1-0.20230629144634-c3f70bd1f8ea h1:LortEJFE6fwOPbQbcEIRazMOHh+1sKeHf0BOSkSAZqk=
 go.opentelemetry.io/collector/config/confignet v0.80.1-0.20230629144634-c3f70bd1f8ea/go.mod h1:unOg7BZvpt6T5xsf+LyeOQvUhD8ld/2AbfOsmUZ/bPM=
-go.opentelemetry.io/collector/config/configopaque v0.80.1-0.20230629144634-c3f70bd1f8ea h1:14awmqtjlsjo5PuV0Zt/e31vTAsU3CgwYA2eVV2fSL8=
-go.opentelemetry.io/collector/config/configopaque v0.80.1-0.20230629144634-c3f70bd1f8ea/go.mod h1:pM1oy6gasukw3H6jAvc9Q9OtFaaY2IbfeuwCPAjOgXc=
+go.opentelemetry.io/collector/config/configopaque v0.82.0 h1:0Ma63QTr4AkODzEABZHtgiU5Dig8SItpHOuB28UnVSw=
+go.opentelemetry.io/collector/config/configopaque v0.82.0/go.mod h1:pM1oy6gasukw3H6jAvc9Q9OtFaaY2IbfeuwCPAjOgXc=
 go.opentelemetry.io/collector/config/configtelemetry v0.80.1-0.20230629144634-c3f70bd1f8ea h1:rm+ojtY7gCRRBfY5DYKZrGm87jd5qLbvhRyVbFiC9/A=
 go.opentelemetry.io/collector/config/configtelemetry v0.80.1-0.20230629144634-c3f70bd1f8ea/go.mod h1:KEYQRiYJdx38iZkvcLKBZWH9fK4NeafxBwGRrRKMgyA=
-go.opentelemetry.io/collector/config/configtls v0.80.1-0.20230629144634-c3f70bd1f8ea h1:QS+urjZ0LFsC3GI9xk9J6V4s3GzkOQ7Ef7+1KFZjFhY=
-go.opentelemetry.io/collector/config/configtls v0.80.1-0.20230629144634-c3f70bd1f8ea/go.mod h1:fO1VgdtrcgcVA3Y2vB/YQvTh2tNNFW0R0NjWrtvjTOQ=
+go.opentelemetry.io/collector/config/configtls v0.82.0 h1:eE/8muTszLlviOGLy5N08BaXLCcYqDW3mKIoKyDDa8o=
+go.opentelemetry.io/collector/config/configtls v0.82.0/go.mod h1:unBTmL1bdpkp9mYEDz7N+Ln4yEwh7Ug74I1HgZMplCk=
 go.opentelemetry.io/collector/confmap v0.80.1-0.20230629144634-c3f70bd1f8ea h1:kcGEQM8KRx2H3Q/cdE9YXLTa3eMJHrA9fXQu3gFFLxw=
 go.opentelemetry.io/collector/confmap v0.80.1-0.20230629144634-c3f70bd1f8ea/go.mod h1:L2d3LUsKYxAAORcpuXjW/Pln95vmw5p6lWDf6Pr/fUg=
 go.opentelemetry.io/collector/extension v0.80.1-0.20230629144634-c3f70bd1f8ea h1:g/Ogex2vonsGkGH9PWj5+Qk/IImsMIgAdaIQm29TD+w=
@@ -372,8 +372,8 @@ golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a/go.mod h1:oPkhp1MJrh7nUepCBc
 golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20220908164124-27713097b956/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.1.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.9.0 h1:KS/R3tvhPqvJvwcKfnBHJwwthS11LRhmM5D59eEXa0s=
-golang.org/x/sys v0.9.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.10.0 h1:SqMFp9UcQJZa+pmYuAKjd9xq1f0j5rLcDIk0mj4qAsA=
+golang.org/x/sys v0.10.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
 golang.org/x/term v0.0.0-20210927222741-03fcf44c2211/go.mod h1:jbD1KX2456YbFQfuXm/mYQcufACuNUgVhRMnK/tPxf8=
 golang.org/x/term v0.1.0/go.mod h1:jbD1KX2456YbFQfuXm/mYQcufACuNUgVhRMnK/tPxf8=
