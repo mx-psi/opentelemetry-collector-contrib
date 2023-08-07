@@ -13,7 +13,7 @@ require (
 	go.opentelemetry.io/collector/config/configtls v0.80.1-0.20230629144634-c3f70bd1f8ea
 	go.opentelemetry.io/collector/receiver/otlpreceiver v0.80.1-0.20230629144634-c3f70bd1f8ea
 	golang.org/x/mod v0.11.0
-	golang.org/x/text v0.10.0
+	golang.org/x/text v0.12.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
