@@ -10,7 +10,7 @@ require (
 	github.com/jpillora/backoff v1.0.0
 	github.com/json-iterator/go v1.1.12
 	github.com/observiq/ctimefmt v1.0.0
-	github.com/observiq/nanojack v0.0.0-20201106172433-343928847ebc
+	github.com/observiq/nanojack v2.0.0+incompatible
 	github.com/open-telemetry/opentelemetry-collector-contrib/extension/storage v0.80.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/internal/coreinternal v0.80.0
 	github.com/stretchr/testify v1.8.4
@@ -60,6 +60,7 @@ require (
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
 	google.golang.org/grpc v1.56.1 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
