@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/census-instrumentation/opencensus-proto v0.4.1
-	github.com/google/go-cmp v0.5.9
+	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.3.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/internal/common v0.80.0
