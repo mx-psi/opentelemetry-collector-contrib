@@ -170,6 +170,8 @@ github.com/hashicorp/go-syslog v1.0.0/go.mod h1:qPfqrKkXGihmCqbJM2mZgkZGvKG1dFdv
 github.com/hashicorp/go-uuid v1.0.0/go.mod h1:6SBZvOh/SIDV7/2o3Jml5SYk/TvGqwFJ/bN7x4byOro=
 github.com/hashicorp/go-uuid v1.0.1/go.mod h1:6SBZvOh/SIDV7/2o3Jml5SYk/TvGqwFJ/bN7x4byOro=
 github.com/hashicorp/go-version v1.1.0/go.mod h1:fltr4n8CU8Ke44wwGCBoEymUuxUHl09ZGVZPK5anwXA=
+github.com/hashicorp/go-version v1.6.0 h1:feTTfFNnjP967rlCxM/I9g701jU+RN74YKx2mOkIeek=
+github.com/hashicorp/go-version v1.6.0/go.mod h1:fltr4n8CU8Ke44wwGCBoEymUuxUHl09ZGVZPK5anwXA=
 github.com/hashicorp/golang-lru v0.5.0/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/hashicorp/golang-lru v0.5.1/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/hashicorp/hcl v1.0.0 h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4=
@@ -341,8 +343,8 @@ go.opentelemetry.io/collector/exporter v0.80.1-0.20230629144634-c3f70bd1f8ea h1:
 go.opentelemetry.io/collector/exporter v0.80.1-0.20230629144634-c3f70bd1f8ea/go.mod h1:Pb18W9eIjwEWWUcM5snaixfwPxNWwkr9nL7pTSvjIB4=
 go.opentelemetry.io/collector/extension v0.80.1-0.20230629144634-c3f70bd1f8ea h1:g/Ogex2vonsGkGH9PWj5+Qk/IImsMIgAdaIQm29TD+w=
 go.opentelemetry.io/collector/extension v0.80.1-0.20230629144634-c3f70bd1f8ea/go.mod h1:Fz8FnUWoPw2GafKugUp1X4lHCyf0eE6bgRao9kADftE=
-go.opentelemetry.io/collector/featuregate v1.0.0-rcv0013.0.20230629144634-c3f70bd1f8ea h1:dcQmlhYimTO+dAFTOnjZKbr9I7uXWNpxHy2Kmov8V7Q=
-go.opentelemetry.io/collector/featuregate v1.0.0-rcv0013.0.20230629144634-c3f70bd1f8ea/go.mod h1:0mE3mDLmUrOXVoNsuvj+7dV14h/9HFl/Fy9YTLoLObo=
+go.opentelemetry.io/collector/featuregate v1.0.0 h1:5MGqe2v5zxaoo73BUOvUTunftX5J8RGrbFsC2Ha7N3g=
+go.opentelemetry.io/collector/featuregate v1.0.0/go.mod h1:xGbRuw+GbutRtVVSEy3YR2yuOlEyiUMhN2M9DJljgqY=
 go.opentelemetry.io/collector/pdata v1.0.0-rcv0013.0.20230629144634-c3f70bd1f8ea h1:0RH6lGHddvf0NLbTZ87M8niasj/115sfvJkg8hmxTVs=
 go.opentelemetry.io/collector/pdata v1.0.0-rcv0013.0.20230629144634-c3f70bd1f8ea/go.mod h1:+HachlZ+UPT/4zC5GonqL3ZOuQI4NjvsbtQ7FB6hqA8=
 go.opentelemetry.io/collector/processor v0.80.1-0.20230629144634-c3f70bd1f8ea h1:UHPbOIblTrGh3LfyEjGkT1X7qU+K7wsMiodG9i3u0nw=
