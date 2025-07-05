@@ -31,6 +31,10 @@ func oldFormatProperties(c *Config, j supportedJar) error {
 // If you change this variable name, please open an issue in opentelemetry-java-contrib
 // so that repository's release automation can be updated
 var jmxMetricsGathererVersions = map[string]supportedJar{
+	"0344be738295602718934accd0557496b10464582681e69a251dc3b8d3f69b69": {
+		version: "1.47.0-alpha",
+		jar:     "JMX metrics gatherer",
+	},
 	"0ba6647cc31b627dbe20de87d696c3cffb0f72f0fc2ad3d3fe2be8aa3582bf26": {
 		version: "1.32.0-alpha",
 		jar:     "JMX metrics gatherer",
