@@ -75,9 +75,12 @@ func TestExtension(t *testing.T) {
 						Endpoint: listenAt,
 					},
 					Egress: confighttp.ClientConfig{
-						Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-							"key": "value",
-						}),
+						Headers: &configopaque.MapList{
+							configopaque.OpaquePair{
+								Name:  "key",
+								Value: "value",
+							},
+						},
 					},
 				}
 			},
@@ -101,9 +104,12 @@ func TestExtension(t *testing.T) {
 						Endpoint: listenAt,
 					},
 					Egress: confighttp.ClientConfig{
-						Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-							"key": "value",
-						}),
+						Headers: &configopaque.MapList{
+							configopaque.OpaquePair{
+								Name:  "key",
+								Value: "value",
+							},
+						},
 					},
 				}
 			},
@@ -125,9 +131,12 @@ func TestExtension(t *testing.T) {
 						Endpoint: listenAt,
 					},
 					Egress: confighttp.ClientConfig{
-						Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-							"key": "value",
-						}),
+						Headers: &configopaque.MapList{
+							configopaque.OpaquePair{
+								Name:  "key",
+								Value: "value",
+							},
+						},
 					},
 				}
 			},

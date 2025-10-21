@@ -121,9 +121,12 @@ func TestLoadConfig(t *testing.T) {
 				QueueSettings: exporterhelper.NewDefaultQueueConfig(),
 				ClientConfig: confighttp.ClientConfig{
 					Endpoint: "https://company.logicmonitor.com/rest",
-					Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-						"Authorization": "Bearer <token>",
-					}),
+					Headers: &configopaque.MapList{
+						configopaque.OpaquePair{
+							Name:  "Authorization",
+							Value: "Bearer <token>",
+						},
+					},
 				},
 			},
 		},
@@ -134,9 +137,12 @@ func TestLoadConfig(t *testing.T) {
 				QueueSettings: exporterhelper.NewDefaultQueueConfig(),
 				ClientConfig: confighttp.ClientConfig{
 					Endpoint: "https://company.logicmonitor.com/rest",
-					Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-						"Authorization": "Bearer <token>",
-					}),
+					Headers: &configopaque.MapList{
+						configopaque.OpaquePair{
+							Name:  "Authorization",
+							Value: "Bearer <token>",
+						},
+					},
 				},
 				Logs: LogsConfig{
 					ResourceMappingOperation: "or",

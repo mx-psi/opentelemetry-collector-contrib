@@ -403,10 +403,16 @@ func TestClientConfig(t *testing.T) {
 			config: &Config{
 				ClientConfig: confighttp.ClientConfig{
 					Endpoint: endpoint,
-					Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-						"hdr1": "val1",
-						"hdr2": "val2",
-					}),
+					Headers: &configopaque.MapList{
+						configopaque.OpaquePair{
+							Name:  "hdr1",
+							Value: "val1",
+						},
+						configopaque.OpaquePair{
+							Name:  "hdr2",
+							Value: "val2",
+						},
+					},
 				},
 			},
 		},

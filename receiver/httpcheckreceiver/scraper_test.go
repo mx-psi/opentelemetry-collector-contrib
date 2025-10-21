@@ -688,10 +688,16 @@ func TestRequestBodyWithCustomHeaders(t *testing.T) {
 		{
 			ClientConfig: confighttp.ClientConfig{
 				Endpoint: server.URL,
-				Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-					"Content-Type":    configopaque.String("application/custom+json"),
-					"X-Custom-Header": configopaque.String("custom-value"),
-				}),
+				Headers: &configopaque.MapList{
+					configopaque.OpaquePair{
+						Name:  "Content-Type",
+						Value: configopaque.String("application/custom+json"),
+					},
+					configopaque.OpaquePair{
+						Name:  "X-Custom-Header",
+						Value: configopaque.String("custom-value"),
+					},
+				},
 			},
 			Method: "POST",
 			Body:   `{"data": "test"}`,

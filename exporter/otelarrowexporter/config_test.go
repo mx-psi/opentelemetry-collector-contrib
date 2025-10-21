@@ -72,11 +72,20 @@ func TestUnmarshalConfig(t *testing.T) {
 				}),
 			},
 			ClientConfig: configgrpc.ClientConfig{
-				Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-					"can you have a . here?": "F0000000-0000-0000-0000-000000000000",
-					"header1":                "234",
-					"another":                "somevalue",
-				}),
+				Headers: &configopaque.MapList{
+					configopaque.OpaquePair{
+						Name:  "can you have a . here?",
+						Value: "F0000000-0000-0000-0000-000000000000",
+					},
+					configopaque.OpaquePair{
+						Name:  "header1",
+						Value: "234",
+					},
+					configopaque.OpaquePair{
+						Name:  "another",
+						Value: "somevalue",
+					},
+				},
 				Endpoint:    "1.2.3.4:1234",
 				Compression: "none",
 				TLS: configtls.ClientConfig{

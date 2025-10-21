@@ -203,37 +203,61 @@ func TestSignalExporter_CustomHeadersAndAuthorization(t *testing.T) {
 		{
 			name: "logs",
 			config: configgrpc.ClientConfig{
-				Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-					"Custom-Header": "custom-value",
-					"X-Test":        "test-value",
-				}),
+				Headers: &configopaque.MapList{
+					configopaque.OpaquePair{
+						Name:  "Custom-Header",
+						Value: "custom-value",
+					},
+					configopaque.OpaquePair{
+						Name:  "X-Test",
+						Value: "test-value",
+					},
+				},
 			},
 		},
 		{
 			name: "traces",
 			config: configgrpc.ClientConfig{
-				Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-					"Custom-Header": "custom-value",
-					"X-Test":        "test-value",
-				}),
+				Headers: &configopaque.MapList{
+					configopaque.OpaquePair{
+						Name:  "Custom-Header",
+						Value: "custom-value",
+					},
+					configopaque.OpaquePair{
+						Name:  "X-Test",
+						Value: "test-value",
+					},
+				},
 			},
 		},
 		{
 			name: "metrics",
 			config: configgrpc.ClientConfig{
-				Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-					"Custom-Header": "custom-value",
-					"X-Test":        "test-value",
-				}),
+				Headers: &configopaque.MapList{
+					configopaque.OpaquePair{
+						Name:  "Custom-Header",
+						Value: "custom-value",
+					},
+					configopaque.OpaquePair{
+						Name:  "X-Test",
+						Value: "test-value",
+					},
+				},
 			},
 		},
 		{
 			name: "profiles",
 			config: configgrpc.ClientConfig{
-				Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-					"Custom-Header": "custom-value",
-					"X-Test":        "test-value",
-				}),
+				Headers: &configopaque.MapList{
+					configopaque.OpaquePair{
+						Name:  "Custom-Header",
+						Value: "custom-value",
+					},
+					configopaque.OpaquePair{
+						Name:  "X-Test",
+						Value: "test-value",
+					},
+				},
 			},
 		},
 	}

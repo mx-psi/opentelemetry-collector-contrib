@@ -105,9 +105,12 @@ func TestProfilesExporter_EnhanceContext(t *testing.T) {
 		Domain:     "test.domain.com",
 		PrivateKey: "test-key",
 		Profiles: configgrpc.ClientConfig{
-			Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-				"test-header": "test-value",
-			}),
+			Headers: &configopaque.MapList{
+				configopaque.OpaquePair{
+					Name:  "test-header",
+					Value: "test-value",
+				},
+			},
 		},
 	}
 

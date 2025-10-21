@@ -187,7 +187,12 @@ func TestConsumeMetrics(t *testing.T) {
 			cfg := &Config{
 				ClientConfig: confighttp.ClientConfig{
 					Timeout: 1 * time.Second,
-					Headers: configopaque.MapListFromMap(map[string]configopaque.String{"test_header_": "test"}),
+					Headers: &configopaque.MapList{
+					configopaque.OpaquePair{
+						Name:  "test_header_",
+						Value: "test",
+					},
+				},
 				},
 			}
 
@@ -934,7 +939,12 @@ func TestConsumeEventData(t *testing.T) {
 			cfg := &Config{
 				ClientConfig: confighttp.ClientConfig{
 					Timeout: 1 * time.Second,
-					Headers: configopaque.MapListFromMap(map[string]configopaque.String{"test_header_": "test"}),
+					Headers: &configopaque.MapList{
+					configopaque.OpaquePair{
+						Name:  "test_header_",
+						Value: "test",
+					},
+				},
 				},
 			}
 
@@ -2052,7 +2062,12 @@ func TestConsumeMixedMetrics(t *testing.T) {
 			cfg := &Config{
 				ClientConfig: confighttp.ClientConfig{
 					Timeout: 1 * time.Second,
-					Headers: configopaque.MapListFromMap(map[string]configopaque.String{"test_header_": "test"}),
+					Headers: &configopaque.MapList{
+					configopaque.OpaquePair{
+						Name:  "test_header_",
+						Value: "test",
+					},
+				},
 				},
 			}
 

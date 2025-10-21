@@ -103,10 +103,16 @@ func TestCreateMetrics_CustomConfig(t *testing.T) {
 		Realm:       "us1",
 		ClientConfig: confighttp.ClientConfig{
 			Timeout: 2 * time.Second,
-			Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-				"added-entry": "added value",
-				"dot.test":    "test",
-			}),
+			Headers: &configopaque.MapList{
+				configopaque.OpaquePair{
+					Name:  "added-entry",
+					Value: "added value",
+				},
+				configopaque.OpaquePair{
+					Name:  "dot.test",
+					Value: "test",
+				},
+			},
 		},
 	}
 

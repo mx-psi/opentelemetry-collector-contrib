@@ -109,9 +109,12 @@ func TestTracesExporter_EnhanceContext(t *testing.T) {
 		PrivateKey: "test-key",
 		Traces: TransportConfig{
 			ClientConfig: configgrpc.ClientConfig{
-				Headers: configopaque.MapListFromMap(map[string]configopaque.String{
-					"test-header": "test-value",
-				}),
+				Headers: &configopaque.MapList{
+					configopaque.OpaquePair{
+						Name:  "test-header",
+						Value: "test-value",
+					},
+				},
 			},
 		},
 	}
