@@ -1,19 +1,15 @@
-//go:build !js
+//go:build js
 
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
 package purefareceiver // import "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/purefareceiver"
 
-// This file implements Factory for Array scraper.
-
 import (
 	"context"
-	"fmt"
-	"time"
+	"errors"
 
 	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/confighttp"
 	"go.opentelemetry.io/collector/consumer"
 	"go.opentelemetry.io/collector/receiver"
 
@@ -28,32 +24,18 @@ func NewFactory() receiver.Factory {
 		receiver.WithMetrics(createMetricsReceiver, metadata.MetricsStability))
 }
 
+// Config defines configuration for the purefa receiver.
+type Config struct{}
+
 func createDefaultConfig() component.Config {
-	return &Config{
-		ArrayName:    "foobar.example.com",
-		Namespace:    "purefa",
-		ClientConfig: confighttp.NewDefaultClientConfig(),
-		Settings: &Settings{
-			ReloadIntervals: &ReloadIntervals{
-				Array:       60 * time.Second,
-				Hosts:       60 * time.Second,
-				Directories: 60 * time.Second,
-				Pods:        60 * time.Second,
-				Volumes:     60 * time.Second,
-			},
-		},
-	}
+	return &Config{}
 }
 
 func createMetricsReceiver(
 	_ context.Context,
-	set receiver.Settings,
-	rCfg component.Config,
-	next consumer.Metrics,
+	_ receiver.Settings,
+	_ component.Config,
+	_ consumer.Metrics,
 ) (receiver.Metrics, error) {
-	cfg, ok := rCfg.(*Config)
-	if !ok {
-		return nil, fmt.Errorf("a purefa receiver config was expected by the receiver factory, but got %T", rCfg)
-	}
-	return newReceiver(cfg, set, next), nil
+	return nil, errors.New("purefa receiver is not supported on js/wasm")
 }
