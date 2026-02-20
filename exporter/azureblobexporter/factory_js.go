@@ -1,4 +1,4 @@
-//go:build !js
+//go:build js
 
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
@@ -7,12 +7,11 @@ package azureblobexporter // import "github.com/open-telemetry/opentelemetry-col
 
 import (
 	"context"
+	"errors"
 
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/config/configretry"
 	"go.opentelemetry.io/collector/exporter"
-	"go.opentelemetry.io/collector/exporter/exporterhelper"
-	"go.opentelemetry.io/collector/pipeline"
 
 	"github.com/open-telemetry/opentelemetry-collector-contrib/exporter/azureblobexporter/internal/metadata"
 )
@@ -59,45 +58,24 @@ func createDefaultConfig() component.Config {
 	}
 }
 
-func createLogsExporter(ctx context.Context,
-	params exporter.Settings,
-	config component.Config,
+func createLogsExporter(_ context.Context,
+	_ exporter.Settings,
+	_ component.Config,
 ) (exporter.Logs, error) {
-	cfg := config.(*Config)
-	azBlobExporter := newAzureBlobExporter(cfg, params.Logger, pipeline.SignalLogs)
-
-	return exporterhelper.NewLogs(ctx, params,
-		config,
-		azBlobExporter.ConsumeLogs,
-		exporterhelper.WithStart(azBlobExporter.start),
-		exporterhelper.WithRetry(cfg.BackOffConfig))
+	return nil, errors.New("azureblobexporter is not supported on js/wasm")
 }
 
-func createMetricsExporter(ctx context.Context,
-	params exporter.Settings,
-	config component.Config,
+func createMetricsExporter(_ context.Context,
+	_ exporter.Settings,
+	_ component.Config,
 ) (exporter.Metrics, error) {
-	cfg := config.(*Config)
-	azBlobExporter := newAzureBlobExporter(cfg, params.Logger, pipeline.SignalMetrics)
-
-	return exporterhelper.NewMetrics(ctx, params,
-		config,
-		azBlobExporter.ConsumeMetrics,
-		exporterhelper.WithStart(azBlobExporter.start),
-		exporterhelper.WithRetry(cfg.BackOffConfig))
+	return nil, errors.New("azureblobexporter is not supported on js/wasm")
 }
 
-func createTracesExporter(ctx context.Context,
-	params exporter.Settings,
-	config component.Config,
+func createTracesExporter(_ context.Context,
+	_ exporter.Settings,
+	_ component.Config,
 ) (exporter.Traces, error) {
-	cfg := config.(*Config)
-	azBlobExporter := newAzureBlobExporter(cfg, params.Logger, pipeline.SignalTraces)
-
-	return exporterhelper.NewTraces(ctx,
-		params,
-		config,
-		azBlobExporter.ConsumeTraces,
-		exporterhelper.WithStart(azBlobExporter.start),
-		exporterhelper.WithRetry(cfg.BackOffConfig))
+	return nil, errors.New("azureblobexporter is not supported on js/wasm")
 }
+

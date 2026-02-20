@@ -6,8 +6,6 @@
 package dbstorage // import "github.com/open-telemetry/opentelemetry-collector-contrib/extension/storage/dbstorage"
 
 import (
-	"context"
-
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/extension"
 
@@ -26,12 +24,4 @@ func NewFactory() extension.Factory {
 
 func createDefaultConfig() component.Config {
 	return &Config{}
-}
-
-func createExtension(
-	_ context.Context,
-	params extension.Settings,
-	cfg component.Config,
-) (extension.Extension, error) {
-	return newDBStorage(params.Logger, cfg.(*Config))
 }

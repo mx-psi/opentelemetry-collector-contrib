@@ -1,29 +1,19 @@
-//go:build !js
+//go:build js
 
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
-
-//go:generate make mdatagen
 
 package filestorage // import "github.com/open-telemetry/opentelemetry-collector-contrib/extension/storage/filestorage"
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/extension"
 
 	"github.com/open-telemetry/opentelemetry-collector-contrib/extension/storage/filestorage/internal/metadata"
-)
-
-const (
-	// use default bbolt value
-	// https://github.com/etcd-io/bbolt/blob/d5db64bdbfdee1cb410894605f42ffef898f395d/cmd/bbolt/main.go#L1955
-	defaultMaxTransactionSize         = 65536
-	defaultReboundTriggerThresholdMib = 10
-	defaultReboundNeededThresholdMib  = 100
-	defaultCompactionInterval         = time.Second * 5
 )
 
 // NewFactory creates a factory for HostObserver extension.
@@ -38,15 +28,15 @@ func NewFactory() extension.Factory {
 
 func createDefaultConfig() component.Config {
 	return &Config{
-		Directory: getDefaultDirectory(),
+		Directory: "/var/lib/otelcol/file_storage",
 		Compaction: &CompactionConfig{
-			Directory:                  getDefaultDirectory(),
+			Directory:                  "/var/lib/otelcol/file_storage",
 			OnStart:                    false,
 			OnRebound:                  false,
-			MaxTransactionSize:         defaultMaxTransactionSize,
-			ReboundNeededThresholdMiB:  defaultReboundNeededThresholdMib,
-			ReboundTriggerThresholdMiB: defaultReboundTriggerThresholdMib,
-			CheckInterval:              defaultCompactionInterval,
+			MaxTransactionSize:         65536,
+			ReboundNeededThresholdMiB:  100,
+			ReboundTriggerThresholdMiB: 10,
+			CheckInterval:              time.Second * 5,
 			CleanupOnStart:             false,
 		},
 		Timeout:              time.Second,
@@ -58,8 +48,8 @@ func createDefaultConfig() component.Config {
 
 func createExtension(
 	_ context.Context,
-	params extension.Settings,
-	cfg component.Config,
+	_ extension.Settings,
+	_ component.Config,
 ) (extension.Extension, error) {
-	return newLocalFileStorage(params.Logger, cfg.(*Config))
+	return nil, errors.New("filestorage extension is not supported on js/wasm")
 }
