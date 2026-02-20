@@ -17,7 +17,7 @@ var (
 
 func getCollectorVersion() string {
 	once.Do(func() {
-		osInformation := runtime.GOOS[:3] + "-" + runtime.GOARCH
+		osInformation := runtime.GOOS[:min(3, len(runtime.GOOS))] + "-" + runtime.GOARCH
 		unknownVersion := "otelc-unknown-" + osInformation
 
 		info, ok := debug.ReadBuildInfo()
