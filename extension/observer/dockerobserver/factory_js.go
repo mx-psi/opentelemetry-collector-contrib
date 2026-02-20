@@ -1,4 +1,4 @@
-//go:build !js
+//go:build js
 
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
@@ -7,14 +7,12 @@ package dockerobserver // import "github.com/open-telemetry/opentelemetry-collec
 
 import (
 	"context"
-	"time"
+	"errors"
 
-	"github.com/docker/docker/client"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/extension"
 
 	"github.com/open-telemetry/opentelemetry-collector-contrib/extension/observer/dockerobserver/internal/metadata"
-	"github.com/open-telemetry/opentelemetry-collector-contrib/internal/docker"
 )
 
 // NewFactory should be called to create a factory with default values.
@@ -28,21 +26,13 @@ func NewFactory() extension.Factory {
 }
 
 func createDefaultConfig() component.Config {
-	return &Config{
-		Config: docker.Config{
-			Endpoint:         client.DefaultDockerHost,
-			Timeout:          5 * time.Second,
-			DockerAPIVersion: defaultDockerAPIVersion,
-		},
-		CacheSyncInterval: 60 * time.Minute,
-	}
+	return &Config{}
 }
 
 func createExtension(
 	_ context.Context,
-	settings extension.Settings,
-	cfg component.Config,
+	_ extension.Settings,
+	_ component.Config,
 ) (extension.Extension, error) {
-	config := cfg.(*Config)
-	return newObserver(settings.Logger, config)
+	return nil, errors.New("docker_observer is not supported on js/wasm")
 }
