@@ -1,0 +1,9 @@
+//go:build js
+
+// Copyright The OpenTelemetry Authors
+// SPDX-License-Identifier: Apache-2.0
+
+package dockerstatsreceiver // import "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/dockerstatsreceiver"
+
+// Config is a stub for js/wasm builds where Docker is not supported.
+type Config struct{}
