@@ -15,8 +15,6 @@ import (
 	"sort"
 	"strings"
 	"sync"
-	"syscall"
-
 	"github.com/google/uuid"
 	"github.com/oklog/ulid/v2"
 	"github.com/open-telemetry/opamp-go/client"
@@ -480,7 +478,7 @@ func (o *opampAgent) onCommand(_ context.Context, command *protobufs.ServerToAge
 		if err != nil {
 			return fmt.Errorf("finding current process from pid: %w", err)
 		}
-		return collectorProcess.Signal(syscall.SIGHUP)
+		return sendSIGHUP(collectorProcess)
 	}
 	return nil
 }
