@@ -1,19 +1,15 @@
-//go:build !js
+//go:build js
 
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
 package purefbreceiver // import "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/purefbreceiver"
 
-// This file implements Factory for Array scraper.
-
 import (
 	"context"
-	"fmt"
-	"time"
+	"errors"
 
 	"go.opentelemetry.io/collector/component"
-	"go.opentelemetry.io/collector/config/confighttp"
 	"go.opentelemetry.io/collector/consumer"
 	"go.opentelemetry.io/collector/receiver"
 
@@ -28,28 +24,18 @@ func NewFactory() receiver.Factory {
 		receiver.WithMetrics(createMetricsReceiver, metadata.MetricsStability))
 }
 
+// Config defines configuration for the purefb receiver.
+type Config struct{}
+
 func createDefaultConfig() component.Config {
-	return &Config{
-		ClientConfig: confighttp.NewDefaultClientConfig(),
-		Settings: &Settings{
-			ReloadIntervals: &ReloadIntervals{
-				Array:   15 * time.Second,
-				Clients: 5 * time.Minute,
-				Usage:   5 * time.Minute,
-			},
-		},
-	}
+	return &Config{}
 }
 
 func createMetricsReceiver(
 	_ context.Context,
-	set receiver.Settings,
-	rCfg component.Config,
-	next consumer.Metrics,
+	_ receiver.Settings,
+	_ component.Config,
+	_ consumer.Metrics,
 ) (receiver.Metrics, error) {
-	cfg, ok := rCfg.(*Config)
-	if !ok {
-		return nil, fmt.Errorf("a purefb receiver config was expected by the receiver factory, but got %T", rCfg)
-	}
-	return newReceiver(cfg, set, next), nil
+	return nil, errors.New("purefb receiver is not supported on js/wasm")
 }
