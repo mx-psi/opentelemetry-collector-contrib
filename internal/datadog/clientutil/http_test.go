@@ -26,15 +26,12 @@ var buildInfo = component.BuildInfo{
 
 func TestNewHTTPClient(t *testing.T) {
 	hcsEmpty := confighttp.NewDefaultClientConfig()
-	// TODO: See https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/49316.
-	hcsEmpty.MaxIdleConns = 0    //nolint:staticcheck // SA1019: testing legacy field handling
-	hcsEmpty.IdleConnTimeout = 0 //nolint:staticcheck // SA1019: testing legacy field handling
 	hcsEmpty.ForceAttemptHTTP2 = false
 	client1 := NewHTTPClient(hcsEmpty)
 	defaultTransport := &http.Transport{
 		MaxIdleConns:          100,
 		MaxIdleConnsPerHost:   5,
-		IdleConnTimeout:       45 * time.Second,
+		IdleConnTimeout:       90 * time.Second,
 		TLSHandshakeTimeout:   10 * time.Second,
 		ExpectContinueTimeout: 1 * time.Second,
 		ForceAttemptHTTP2:     false,
@@ -55,7 +52,6 @@ func TestNewHTTPClient(t *testing.T) {
 	maxIdleConnPerHost := 150
 	maxConnPerHost := 250
 	hcs := confighttp.NewDefaultClientConfig()
-	// TODO: See https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/49316.
 	hcs.ForceAttemptHTTP2 = false
 	hcs.ReadBufferSize = 100
 	hcs.WriteBufferSize = 200
@@ -100,7 +96,6 @@ func TestNewHTTPClient(t *testing.T) {
 	// Checking that the client config can receive ProxyUrl and
 	// it will be passed to the http client.
 	hcsForC3 := confighttp.NewDefaultClientConfig()
-	// TODO: See https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/49316.
 	hcsForC3.ForceAttemptHTTP2 = false
 	hcsForC3.ReadBufferSize = 100
 	hcsForC3.WriteBufferSize = 200
@@ -140,7 +135,6 @@ func TestNewHTTPClient(t *testing.T) {
 	// Checking that in the absence of ProxyUrl in the client config, the
 	// environment variable is used for the http proxy.
 	hcsForC5 := confighttp.NewDefaultClientConfig()
-	// TODO: See https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/49316.
 	hcsForC5.ForceAttemptHTTP2 = false
 	hcsForC5.ReadBufferSize = 100
 	hcsForC5.WriteBufferSize = 200
