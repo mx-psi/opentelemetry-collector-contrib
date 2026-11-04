@@ -8,6 +8,7 @@ package resourcedetectionprocessor
 import (
 	"context"
 	"errors"
+	"sync"
 	"testing"
 	"time"
 
@@ -504,6 +505,66 @@ func TestProcessor_RefreshInterval_KeepsLastGoodOnFailure(t *testing.T) {
 
 	// Verify the mock saw exactly 3 Detect calls in the order we expected.
 	md.AssertExpectations(t)
+}
+
+func TestProcessor_InitialDetectionRunsOncePerProvider(t *testing.T) {
+	res := pcommon.NewResource()
+	res.Attributes().PutStr("k", "v")
+
+	tests := []struct {
+		name        string
+		detectErr   error
+		expectedErr string
+	}{
+		{name: "success"},
+		{name: "failure", detectErr: errors.New("boom"), expectedErr: "boom"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			md := &mockDetector{}
+			md.On("Detect").Return(res, tt.detectErr)
+
+			factory := &factory{
+				providers: map[component.ID]*internal.ResourceProvider{},
+				resourceProviderFactory: internal.NewProviderFactory(map[internal.DetectorType]internal.DetectorFactory{
+					"mock": func(processor.Settings, internal.DetectorConfig, bool) (internal.Detector, error) {
+						return md, nil
+					},
+				}),
+			}
+			cfg := &Config{Detectors: []string{"mock"}, ClientConfig: confighttp.NewDefaultClientConfig()}
+			settings := processortest.NewNopSettings(metadata.Type)
+
+			tp, err := factory.createTracesProcessor(t.Context(), settings, cfg, consumertest.NewNop())
+			require.NoError(t, err)
+			mp, err := factory.createMetricsProcessor(t.Context(), settings, cfg, consumertest.NewNop())
+			require.NoError(t, err)
+			lp, err := factory.createLogsProcessor(t.Context(), settings, cfg, consumertest.NewNop())
+			require.NoError(t, err)
+
+			comps := []component.Component{tp, mp, lp}
+			errs := make([]error, len(comps))
+			var wg sync.WaitGroup
+			for i, c := range comps {
+				wg.Go(func() { errs[i] = c.Start(t.Context(), componenttest.NewNopHost()) })
+			}
+			wg.Wait()
+
+			for _, err := range errs {
+				if tt.expectedErr == "" {
+					assert.NoError(t, err)
+				} else {
+					assert.ErrorContains(t, err, tt.expectedErr)
+				}
+			}
+			md.AssertNumberOfCalls(t, "Detect", 1)
+
+			for _, c := range comps {
+				require.NoError(t, c.Shutdown(t.Context()))
+			}
+		})
+	}
 }
 
 func benchmarkConsumeTraces(b *testing.B, cfg *Config) {

@@ -135,6 +135,10 @@ type ResourceProvider struct {
 	detectors        []detectorEntry
 	detectedResource atomic.Pointer[resourceResult]
 
+	// Initial detection is shared by all processors using this provider.
+	initOnce sync.Once
+	initErr  error
+
 	// Refresh loop control
 	refreshInterval time.Duration
 	stopCh          chan struct{}
@@ -166,6 +170,14 @@ func (p *ResourceProvider) Get(_ context.Context, _ *http.Client) (pcommon.Resou
 		return result.resource, result.schemaURL, result.err
 	}
 	return pcommon.NewResource(), "", nil
+}
+
+// InitialDetect runs the initial detection only once; later calls return its error.
+func (p *ResourceProvider) InitialDetect(ctx context.Context, client *http.Client) error {
+	p.initOnce.Do(func() {
+		p.initErr = p.Refresh(ctx, client)
+	})
+	return p.initErr
 }
 
 // Refresh recomputes the resource, replacing any previous result.
