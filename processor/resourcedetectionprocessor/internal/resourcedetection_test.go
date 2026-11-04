@@ -24,6 +24,8 @@ import (
 	"go.opentelemetry.io/otel/sdk/metric/metricdata"
 	"go.opentelemetry.io/otel/sdk/metric/metricdata/metricdatatest"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"go.uber.org/zap/zaptest/observer"
 
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/metadata"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/metadatatest"
@@ -771,4 +773,21 @@ func newTestResourceProvider(backoffConfig configretry.BackOffConfig, detectors 
 		entries[i] = detectorEntry{detectorType: DetectorType(fmt.Sprintf("mock%d", i)), detector: d}
 	}
 	return NewResourceProvider(zap.NewNop(), tb, backoffConfig, entries...), nil
+}
+
+func TestDeprecatedAlias(t *testing.T) {
+	assert.Nil(t, DeprecatedAlias("old", "new", nil))
+
+	core, logs := observer.New(zapcore.WarnLevel)
+	set := processortest.NewNopSettings(metadata.Type)
+	set.Logger = zap.New(core)
+	want := &mockDetector{}
+	factory := DeprecatedAlias("old", "new", func(processor.Settings, DetectorConfig, bool) (Detector, error) {
+		return want, nil
+	})
+
+	got, err := factory(set, &mockDetectorConfig{}, false)
+	require.NoError(t, err)
+	assert.Same(t, want, got)
+	assert.Equal(t, 1, logs.FilterMessage("the old detector name is deprecated, use new instead").Len())
 }

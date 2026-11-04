@@ -18,6 +18,7 @@ import (
 
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/aws/ec2"
+	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/aws/elasticbeanstalk"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/aws/lambda"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/azure/appservice"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/azure/functions"
@@ -70,6 +71,17 @@ func TestLoadConfig(t *testing.T) {
 	azureAppServiceResourceAttributes.ResourceAttributes.AzureAppServiceInstanceID.Enabled = false
 	azureAppServiceConfig.AzureAppServiceConfig = azureAppServiceResourceAttributes
 
+	deprecatedAzureAppServiceConfig := detectorCreateDefaultConfig()
+	deprecatedAzureAppServiceConfig.DeprecatedAzureAppServiceConfig = azureAppServiceResourceAttributes
+
+	elasticBeanstalkResourceAttributes := elasticbeanstalk.CreateDefaultConfig()
+	elasticBeanstalkResourceAttributes.ResourceAttributes.ServiceVersion.Enabled = false
+	elasticBeanstalkConfig := detectorCreateDefaultConfig()
+	elasticBeanstalkConfig.ElasticbeanstalkConfig = elasticBeanstalkResourceAttributes
+	deprecatedElasticBeanstalkConfig := detectorCreateDefaultConfig()
+	deprecatedElasticBeanstalkConfig.ElasticbeanstalkConfig = elasticBeanstalkResourceAttributes
+	deprecatedElasticBeanstalkConfig.DeprecatedElasticbeanstalkConfig = &elasticBeanstalkResourceAttributes
+
 	azureFunctionsConfig := detectorCreateDefaultConfig()
 	azureFunctionsResourceAttributes := functions.CreateDefaultConfig()
 	azureFunctionsResourceAttributes.ResourceAttributes.FaasInstance.Enabled = false
@@ -111,9 +123,9 @@ func TestLoadConfig(t *testing.T) {
 			},
 		},
 		{
-			id: component.NewIDWithName(metadata.Type, "azureappservice"),
+			id: component.NewIDWithName(metadata.Type, "azure_app_service"),
 			expected: &Config{
-				Detectors:      []string{"env", "azureappservice"},
+				Detectors:      []string{"env", "azure_app_service"},
 				DetectorConfig: azureAppServiceConfig,
 				ClientConfig:   cfg,
 				Override:       false,
@@ -121,9 +133,39 @@ func TestLoadConfig(t *testing.T) {
 			},
 		},
 		{
-			id: component.NewIDWithName(metadata.Type, "azurefunctions"),
+			id: component.NewIDWithName(metadata.Type, "azureappservice"),
 			expected: &Config{
-				Detectors:      []string{"env", "azurefunctions"},
+				Detectors:      []string{"env", "azureappservice"},
+				DetectorConfig: deprecatedAzureAppServiceConfig,
+				ClientConfig:   cfg,
+				Override:       false,
+				Retry:          defaultRetryConfig(),
+			},
+		},
+		{
+			id: component.NewIDWithName(metadata.Type, "elastic_beanstalk"),
+			expected: &Config{
+				Detectors:      []string{"elastic_beanstalk"},
+				DetectorConfig: elasticBeanstalkConfig,
+				ClientConfig:   cfg,
+				Override:       false,
+				Retry:          defaultRetryConfig(),
+			},
+		},
+		{
+			id: component.NewIDWithName(metadata.Type, "elasticbeanstalk_deprecated"),
+			expected: &Config{
+				Detectors:      []string{"elastic_beanstalk"},
+				DetectorConfig: deprecatedElasticBeanstalkConfig,
+				ClientConfig:   cfg,
+				Override:       false,
+				Retry:          defaultRetryConfig(),
+			},
+		},
+		{
+			id: component.NewIDWithName(metadata.Type, "azure_functions"),
+			expected: &Config{
+				Detectors:      []string{"env", "azure_functions"},
 				DetectorConfig: azureFunctionsConfig,
 				ClientConfig:   cfg,
 				Override:       false,
@@ -293,6 +335,15 @@ func TestLoadConfig(t *testing.T) {
 	}
 }
 
+func TestUnmarshalElasticBeanstalkKeyConflict(t *testing.T) {
+	conf := confmap.NewFromStringMap(map[string]any{
+		"elastic_beanstalk": map[string]any{},
+		"elasticbeanstalk":  map[string]any{},
+	})
+	cfg := NewFactory().CreateDefaultConfig()
+	require.ErrorContains(t, conf.Unmarshal(cfg), `only one of "elastic_beanstalk" and the deprecated "elasticbeanstalk" may be set`)
+}
+
 func TestGetConfigFromType(t *testing.T) {
 	herokuDetectorConfig := DetectorConfig{HerokuConfig: heroku.CreateDefaultConfig()}
 	lambdaDetectorConfig := DetectorConfig{LambdaConfig: lambda.CreateDefaultConfig()}
@@ -381,9 +432,12 @@ func TestGetConfigFromType_AllDetectors(t *testing.T) {
 		{"Lambda", "lambda"},
 		{"Azure", "azure"},
 		{"AKS", "aks"},
-		{"AzureAppService", "azureappservice"},
-		{"AzureContainerApps", "azurecontainerapps"},
-		{"AzureFunctions", "azurefunctions"},
+		{"AzureAppService", "azure_app_service"},
+		{"AzureAppServiceDeprecated", "azureappservice"},
+		{"AzureContainerApps", "azure_container_apps"},
+		{"AzureContainerAppsDeprecated", "azurecontainerapps"},
+		{"AzureFunctions", "azure_functions"},
+		{"AzureFunctionsDeprecated", "azurefunctions"},
 		{"Consul", "consul"},
 		{"DigitalOcean", "digitalocean"},
 		{"Docker", "docker"},
@@ -396,7 +450,8 @@ func TestGetConfigFromType_AllDetectors(t *testing.T) {
 		{"System", "system"},
 		{"OpenShift", "openshift"},
 		{"Nova", "nova"},
-		{"OracleCloud", "oraclecloud"},
+		{"OracleCloud", "oracle_cloud"},
+		{"OracleCloudDeprecated", "oraclecloud"},
 		{"K8sAPI", "k8s_api"},
 		{"K8sNode", "k8snode"},
 		{"Kubeadm", "kubeadm"},

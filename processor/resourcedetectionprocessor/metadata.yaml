@@ -21,6 +21,9 @@ attributes:
       - aks
       - alibaba_ecs
       - azure
+      - azure_app_service
+      - azure_container_apps
+      - azure_functions
       - azureappservice
       - azurecontainerapps
       - azurefunctions
@@ -44,6 +47,7 @@ attributes:
       - lambda
       - nova
       - openshift
+      - oracle_cloud
       - oraclecloud
       - scaleway
       - system

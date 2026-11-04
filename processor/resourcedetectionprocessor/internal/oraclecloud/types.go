@@ -4,4 +4,8 @@
 package oraclecloud // import "github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/oraclecloud"
 
 // TypeStr is type of detector.
-const TypeStr = "oraclecloud"
+const (
+	TypeStr = "oracle_cloud"
+	// Deprecated: Use [TypeStr] instead.
+	TypeStrAlias = "oraclecloud"
+)

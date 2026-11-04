@@ -4,4 +4,8 @@
 package appservice // import "github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/azure/appservice"
 
 // TypeStr is the detector type string.
-const TypeStr = "azureappservice"
+const (
+	TypeStr = "azure_app_service"
+	// Deprecated: Use [TypeStr] instead.
+	TypeStrAlias = "azureappservice"
+)

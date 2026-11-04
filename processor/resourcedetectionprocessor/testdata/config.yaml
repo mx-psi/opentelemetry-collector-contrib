@@ -14,6 +14,15 @@ resource_detection/aks:
   timeout: 2s
   override: false
 
+resource_detection/azure_app_service:
+  detectors: [env, azure_app_service]
+  timeout: 2s
+  override: false
+  azure_app_service:
+    resource_attributes:
+      azure.app_service.instance.id:
+        enabled: false
+
 resource_detection/azureappservice:
   detectors: [env, azureappservice]
   timeout: 2s
@@ -23,14 +32,14 @@ resource_detection/azureappservice:
       azure.app_service.instance.id:
         enabled: false
 
-resource_detection/azurecontainerapps:
-  detectors: [env, azurecontainerapps]
+resource_detection/azure_container_apps:
+  detectors: [env, azure_container_apps]
 
-resource_detection/azurefunctions:
-  detectors: [env, azurefunctions]
+resource_detection/azure_functions:
+  detectors: [env, azure_functions]
   timeout: 2s
   override: false
-  azurefunctions:
+  azure_functions:
     resource_attributes:
       faas.instance:
         enabled: false
@@ -98,6 +107,24 @@ resource_detection/refresh:
   timeout: 2s
   override: false
   refresh_interval: 5s
+
+resource_detection/elastic_beanstalk:
+  detectors: [elastic_beanstalk]
+  timeout: 2s
+  override: false
+  elastic_beanstalk:
+    resource_attributes:
+      service.version:
+        enabled: false
+
+resource_detection/elasticbeanstalk_deprecated:
+  detectors: [elastic_beanstalk]
+  timeout: 2s
+  override: false
+  elasticbeanstalk:
+    resource_attributes:
+      service.version:
+        enabled: false
 
 resource_detection/invalid:
   detectors: [env, system]

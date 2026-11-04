@@ -15,14 +15,23 @@ $defs:
       azure:
         description: Azure contains user-specified configurations for the azure detector
         $ref: ./internal/azure.config
-      azureappservice:
+      azure_app_service:
         description: AzureAppServiceConfig contains user-specified configurations for the Azure App Service detector
         $ref: ./internal/azure/appservice.config
-      azurecontainerapps:
+      azure_container_apps:
         description: AzureContainerAppsConfig contains user-specified configurations for the Azure Container Apps detector
         $ref: ./internal/azure/containerapps.config
-      azurefunctions:
+      azure_functions:
         description: AzureFunctionsConfig contains user-specified configurations for the Azure Functions detector
+        $ref: ./internal/azure/functions.config
+      azureappservice:
+        description: 'DeprecatedAzureAppServiceConfig contains user-specified configurations for the azureappservice detector. Deprecated: Use [DetectorConfig.AzureAppServiceConfig] instead.'
+        $ref: ./internal/azure/appservice.config
+      azurecontainerapps:
+        description: 'DeprecatedAzureContainerAppsConfig contains user-specified configurations for the azurecontainerapps detector. Deprecated: Use [DetectorConfig.AzureContainerAppsConfig] instead.'
+        $ref: ./internal/azure/containerapps.config
+      azurefunctions:
+        description: 'DeprecatedAzureFunctionsConfig contains user-specified configurations for the azurefunctions detector. Deprecated: Use [DetectorConfig.AzureFunctionsConfig] instead.'
         $ref: ./internal/azure/functions.config
       consul:
         description: ConsulConfig contains user-specified configurations for the Consul detector
@@ -42,8 +51,12 @@ $defs:
       eks:
         description: EKSConfig contains user-specified configurations for the EKS detector
         $ref: ./internal/aws/eks.config
+      elastic_beanstalk:
+        description: Elasticbeanstalk contains user-specified configurations for the elastic_beanstalk detector
+        $ref: ./internal/aws/elasticbeanstalk.config
       elasticbeanstalk:
-        description: Elasticbeanstalk contains user-specified configurations for the elasticbeanstalk detector
+        description: 'DeprecatedElasticbeanstalkConfig holds the elastic_beanstalk detector configuration set under the elasticbeanstalk key. Deprecated: Use [DetectorConfig.ElasticbeanstalkConfig] instead.'
+        x-pointer: true
         $ref: ./internal/aws/elasticbeanstalk.config
       env:
         description: EnvConfig contains user-specified configurations for the env detector
@@ -81,8 +94,11 @@ $defs:
       openshift:
         description: OpenShift contains user-specified configurations for the OpenShift detector
         $ref: ./internal/openshift.config
-      oraclecloud:
+      oracle_cloud:
         description: OracleCloud contains user-specified configurations for the OracleCloud detector
+        $ref: ./internal/oraclecloud.config
+      oraclecloud:
+        description: 'DeprecatedOracleCloudConfig contains user-specified configurations for the oraclecloud detector. Deprecated: Use [DetectorConfig.OracleCloudConfig] instead.'
         $ref: ./internal/oraclecloud.config
       scaleway:
         description: ScalewayConfig contains user-specified configurations for the scaleway detector

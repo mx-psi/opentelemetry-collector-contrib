@@ -222,6 +222,9 @@ func (f *factory) getResourceDetectionProcessor(
 	oCfg := cfg.(*Config)
 
 	warnDeprecatedPerDetectorFlags(params.Logger, oCfg)
+	if oCfg.DetectorConfig.DeprecatedElasticbeanstalkConfig != nil {
+		params.Logger.Warn("the elasticbeanstalk configuration key is deprecated, use elastic_beanstalk instead")
+	}
 
 	// The deprecated per-detector fail_on_missing_metadata fields are OR'd with this
 	// top-level flag inside each affected detector, preserving per-detector scope.
@@ -306,38 +309,42 @@ func (f *factory) getResourceProvider(
 
 func detectorFactories() map[internal.DetectorType]internal.DetectorFactory {
 	return map[internal.DetectorType]internal.DetectorFactory{
-		akamai.TypeStr:           akamai.NewDetector,
-		alibabaecs.TypeStr:       alibabaecs.NewDetector,
-		aks.TypeStr:              aks.NewDetector,
-		azure.TypeStr:            azure.NewDetector,
-		appservice.TypeStr:       appservice.NewDetector,
-		containerapps.TypeStr:    containerapps.NewDetector,
-		functions.TypeStr:        functions.NewDetector,
-		consul.TypeStr:           consul.NewDetector,
-		digitalocean.TypeStr:     digitalocean.NewDetector,
-		docker.TypeStr:           docker.NewDetector,
-		ec2.TypeStr:              ec2.NewDetector,
-		ecs.TypeStr:              ecs.NewDetector,
-		eks.TypeStr:              eks.NewDetector,
-		elasticbeanstalk.TypeStr: elasticbeanstalk.NewDetector,
-		lambda.TypeStr:           lambda.NewDetector,
-		env.TypeStr:              env.NewDetector,
-		gcp.TypeStr:              gcp.NewDetector,
-		heroku.TypeStr:           heroku.NewDetector,
-		hetzner.TypeStr:          hetzner.NewDetector,
-		ibmcloudclassic.TypeStr:  ibmcloudclassic.NewDetector,
-		ibmcloudvpc.TypeStr:      ibmcloudvpc.NewDetector,
-		scaleway.TypeStr:         scaleway.NewDetector,
-		system.TypeStr:           system.NewDetector,
-		openshift.TypeStr:        openshift.NewDetector,
-		nova.TypeStr:             nova.NewDetector,
-		oraclecloud.TypeStr:      oraclecloud.NewDetector,
-		k8sapi.TypeStr:           k8sapi.NewDetector,
-		k8sapi.TypeStrAlias:      k8sapi.NewDeprecatedDetector,
-		kubeadm.TypeStr:          kubeadm.NewDetector,
-		dynatrace.TypeStr:        dynatrace.NewDetector,
-		tencentcvm.TypeStr:       tencentcvm.NewDetector,
-		upcloud.TypeStr:          upcloud.NewDetector,
-		vultr.TypeStr:            vultr.NewDetector,
+		akamai.TypeStr:             akamai.NewDetector,
+		alibabaecs.TypeStr:         alibabaecs.NewDetector,
+		aks.TypeStr:                aks.NewDetector,
+		azure.TypeStr:              azure.NewDetector,
+		appservice.TypeStr:         appservice.NewDetector,
+		appservice.TypeStrAlias:    internal.DeprecatedAlias(appservice.TypeStrAlias, appservice.TypeStr, appservice.NewDetector), //nolint:staticcheck
+		containerapps.TypeStr:      containerapps.NewDetector,
+		containerapps.TypeStrAlias: internal.DeprecatedAlias(containerapps.TypeStrAlias, containerapps.TypeStr, containerapps.NewDetector), //nolint:staticcheck
+		functions.TypeStr:          functions.NewDetector,
+		functions.TypeStrAlias:     internal.DeprecatedAlias(functions.TypeStrAlias, functions.TypeStr, functions.NewDetector), //nolint:staticcheck
+		consul.TypeStr:             consul.NewDetector,
+		digitalocean.TypeStr:       digitalocean.NewDetector,
+		docker.TypeStr:             docker.NewDetector,
+		ec2.TypeStr:                ec2.NewDetector,
+		ecs.TypeStr:                ecs.NewDetector,
+		eks.TypeStr:                eks.NewDetector,
+		elasticbeanstalk.TypeStr:   elasticbeanstalk.NewDetector,
+		lambda.TypeStr:             lambda.NewDetector,
+		env.TypeStr:                env.NewDetector,
+		gcp.TypeStr:                gcp.NewDetector,
+		heroku.TypeStr:             heroku.NewDetector,
+		hetzner.TypeStr:            hetzner.NewDetector,
+		ibmcloudclassic.TypeStr:    ibmcloudclassic.NewDetector,
+		ibmcloudvpc.TypeStr:        ibmcloudvpc.NewDetector,
+		scaleway.TypeStr:           scaleway.NewDetector,
+		system.TypeStr:             system.NewDetector,
+		openshift.TypeStr:          openshift.NewDetector,
+		nova.TypeStr:               nova.NewDetector,
+		oraclecloud.TypeStr:        oraclecloud.NewDetector,
+		oraclecloud.TypeStrAlias:   internal.DeprecatedAlias(oraclecloud.TypeStrAlias, oraclecloud.TypeStr, oraclecloud.NewDetector), //nolint:staticcheck
+		k8sapi.TypeStr:             k8sapi.NewDetector,
+		k8sapi.TypeStrAlias:        internal.DeprecatedAlias(k8sapi.TypeStrAlias, k8sapi.TypeStr, k8sapi.NewDetector),
+		kubeadm.TypeStr:            kubeadm.NewDetector,
+		dynatrace.TypeStr:          dynatrace.NewDetector,
+		tencentcvm.TypeStr:         tencentcvm.NewDetector,
+		upcloud.TypeStr:            upcloud.NewDetector,
+		vultr.TypeStr:              vultr.NewDetector,
 	}
 }

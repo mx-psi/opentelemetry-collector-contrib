@@ -42,6 +42,18 @@ type ResourceDetectorConfig interface {
 
 type DetectorFactory func(processor.Settings, DetectorConfig, bool) (Detector, error)
 
+// DeprecatedAlias returns a [DetectorFactory] for the deprecated alias of the name detector.
+// It logs a deprecation warning and delegates to factory, or returns nil if factory is nil.
+func DeprecatedAlias(alias, name DetectorType, factory DetectorFactory) DetectorFactory {
+	if factory == nil {
+		return nil
+	}
+	return func(set processor.Settings, cfg DetectorConfig, failOnMissingMetadata bool) (Detector, error) {
+		set.Logger.Warn(fmt.Sprintf("the %s detector name is deprecated, use %s instead", alias, name))
+		return factory(set, cfg, failOnMissingMetadata)
+	}
+}
+
 // detectorEntry pairs a detector with its type so detection telemetry can be
 // attributed to the specific detector.
 type detectorEntry struct {

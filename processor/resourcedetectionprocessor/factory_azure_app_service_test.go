@@ -17,10 +17,10 @@ import (
 )
 
 func TestAzureAppServiceTrimmedBuildCreatesConfiguredProcessor(t *testing.T) {
-	require.Contains(t, internal.NewProviderFactory(detectorFactories()).CompiledDetectorTypes(), "azureappservice")
+	require.Contains(t, internal.NewProviderFactory(detectorFactories()).CompiledDetectorTypes(), "azure_app_service")
 	factory := NewFactory()
 	cfg := factory.CreateDefaultConfig().(*Config)
-	cfg.Detectors = []string{"azureappservice"}
+	cfg.Detectors = []string{"azure_app_service"}
 
 	tp, err := factory.CreateTraces(t.Context(), processortest.NewNopSettings(metadata.Type), cfg, consumertest.NewNop())
 	require.NoError(t, err)

@@ -5,10 +5,12 @@ package resourcedetectionprocessor // import "github.com/open-telemetry/opentele
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"go.opentelemetry.io/collector/config/confighttp"
 	"go.opentelemetry.io/collector/config/configretry"
+	"go.opentelemetry.io/collector/confmap"
 
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/akamai"
@@ -73,6 +75,30 @@ type Config struct {
 	Retry configretry.BackOffConfig `mapstructure:"retry"`
 }
 
+const (
+	elasticBeanstalkConfigKey           = "elastic_beanstalk"
+	deprecatedElasticBeanstalkConfigKey = "elasticbeanstalk"
+)
+
+// Unmarshal maps the deprecated elasticbeanstalk key onto the elastic_beanstalk configuration.
+func (cfg *Config) Unmarshal(conf *confmap.Conf) error {
+	deprecatedSet := conf.IsSet(deprecatedElasticBeanstalkConfigKey)
+	if deprecatedSet {
+		if conf.IsSet(elasticBeanstalkConfigKey) {
+			return fmt.Errorf("only one of %q and the deprecated %q may be set", elasticBeanstalkConfigKey, deprecatedElasticBeanstalkConfigKey)
+		}
+		defaultCfg := elasticbeanstalk.CreateDefaultConfig()
+		cfg.DetectorConfig.DeprecatedElasticbeanstalkConfig = &defaultCfg
+	}
+	if err := conf.Unmarshal(cfg); err != nil {
+		return err
+	}
+	if cfg.DetectorConfig.DeprecatedElasticbeanstalkConfig != nil {
+		cfg.DetectorConfig.ElasticbeanstalkConfig = *cfg.DetectorConfig.DeprecatedElasticbeanstalkConfig
+	}
+	return nil
+}
+
 // Validate rejects configurations that would let a hung detector block the
 // pipeline forever: with retry enabled, at least one of the HTTP client timeout
 // or the retry budget must be finite so detection always terminates.
@@ -97,8 +123,14 @@ type DetectorConfig struct {
 	// EKSConfig contains user-specified configurations for the EKS detector
 	EKSConfig eks.Config `mapstructure:"eks"`
 
-	// Elasticbeanstalk contains user-specified configurations for the elasticbeanstalk detector
-	ElasticbeanstalkConfig elasticbeanstalk.Config `mapstructure:"elasticbeanstalk"`
+	// Elasticbeanstalk contains user-specified configurations for the elastic_beanstalk detector
+	ElasticbeanstalkConfig elasticbeanstalk.Config `mapstructure:"elastic_beanstalk"`
+
+	// DeprecatedElasticbeanstalkConfig holds the elastic_beanstalk detector configuration set under the
+	// elasticbeanstalk key.
+	//
+	// Deprecated: Use [DetectorConfig.ElasticbeanstalkConfig] instead.
+	DeprecatedElasticbeanstalkConfig *elasticbeanstalk.Config `mapstructure:"elasticbeanstalk"`
 
 	// Lambda contains user-specified configurations for the lambda detector
 	LambdaConfig lambda.Config `mapstructure:"lambda"`
@@ -110,13 +142,28 @@ type DetectorConfig struct {
 	AksConfig aks.Config `mapstructure:"aks"`
 
 	// AzureAppServiceConfig contains user-specified configurations for the Azure App Service detector
-	AzureAppServiceConfig appservice.Config `mapstructure:"azureappservice"`
+	AzureAppServiceConfig appservice.Config `mapstructure:"azure_app_service"`
+
+	// DeprecatedAzureAppServiceConfig contains user-specified configurations for the azureappservice detector.
+	//
+	// Deprecated: Use [DetectorConfig.AzureAppServiceConfig] instead.
+	DeprecatedAzureAppServiceConfig appservice.Config `mapstructure:"azureappservice"`
 
 	// AzureContainerAppsConfig contains user-specified configurations for the Azure Container Apps detector
-	AzureContainerAppsConfig containerapps.Config `mapstructure:"azurecontainerapps"`
+	AzureContainerAppsConfig containerapps.Config `mapstructure:"azure_container_apps"`
+
+	// DeprecatedAzureContainerAppsConfig contains user-specified configurations for the azurecontainerapps detector.
+	//
+	// Deprecated: Use [DetectorConfig.AzureContainerAppsConfig] instead.
+	DeprecatedAzureContainerAppsConfig containerapps.Config `mapstructure:"azurecontainerapps"`
 
 	// AzureFunctionsConfig contains user-specified configurations for the Azure Functions detector
-	AzureFunctionsConfig functions.Config `mapstructure:"azurefunctions"`
+	AzureFunctionsConfig functions.Config `mapstructure:"azure_functions"`
+
+	// DeprecatedAzureFunctionsConfig contains user-specified configurations for the azurefunctions detector.
+	//
+	// Deprecated: Use [DetectorConfig.AzureFunctionsConfig] instead.
+	DeprecatedAzureFunctionsConfig functions.Config `mapstructure:"azurefunctions"`
 
 	// ConsulConfig contains user-specified configurations for the Consul detector
 	ConsulConfig consul.Config `mapstructure:"consul"`
@@ -155,7 +202,12 @@ type DetectorConfig struct {
 	OpenStackNovaConfig nova.Config `mapstructure:"nova"`
 
 	// OracleCloud contains user-specified configurations for the OracleCloud detector
-	OracleCloudConfig oraclecloud.Config `mapstructure:"oraclecloud"`
+	OracleCloudConfig oraclecloud.Config `mapstructure:"oracle_cloud"`
+
+	// DeprecatedOracleCloudConfig contains user-specified configurations for the oraclecloud detector.
+	//
+	// Deprecated: Use [DetectorConfig.OracleCloudConfig] instead.
+	DeprecatedOracleCloudConfig oraclecloud.Config `mapstructure:"oraclecloud"`
 
 	// K8SAPIConfig contains user-specified configurations for the K8S API detector
 	K8SAPIConfig k8sapi.Config `mapstructure:"k8s_api"`
@@ -184,38 +236,42 @@ type DetectorConfig struct {
 
 func detectorCreateDefaultConfig() DetectorConfig {
 	return DetectorConfig{
-		AlibabaECSConfig:         alibabaecs.CreateDefaultConfig(),
-		EC2Config:                ec2.CreateDefaultConfig(),
-		ECSConfig:                ecs.CreateDefaultConfig(),
-		EKSConfig:                eks.CreateDefaultConfig(),
-		ElasticbeanstalkConfig:   elasticbeanstalk.CreateDefaultConfig(),
-		EnvConfig:                env.CreateDefaultConfig(),
-		LambdaConfig:             lambda.CreateDefaultConfig(),
-		AzureConfig:              azure.CreateDefaultConfig(),
-		AksConfig:                aks.CreateDefaultConfig(),
-		AzureAppServiceConfig:    appservice.CreateDefaultConfig(),
-		AzureContainerAppsConfig: containerapps.CreateDefaultConfig(),
-		AzureFunctionsConfig:     functions.CreateDefaultConfig(),
-		ConsulConfig:             consul.CreateDefaultConfig(),
-		DigitalOceanConfig:       digitalocean.CreateDefaultConfig(),
-		DockerConfig:             docker.CreateDefaultConfig(),
-		GcpConfig:                gcp.CreateDefaultConfig(),
-		HerokuConfig:             heroku.CreateDefaultConfig(),
-		HetznerConfig:            hetzner.CreateDefaultConfig(),
-		IBMCloudClassicConfig:    ibmcloudclassic.CreateDefaultConfig(),
-		IBMCloudVPCConfig:        ibmcloudvpc.CreateDefaultConfig(),
-		SystemConfig:             system.CreateDefaultConfig(),
-		OpenShiftConfig:          openshift.CreateDefaultConfig(),
-		OpenStackNovaConfig:      nova.CreateDefaultConfig(),
-		OracleCloudConfig:        oraclecloud.CreateDefaultConfig(),
-		K8SAPIConfig:             k8sapi.CreateDefaultConfig(),
-		K8SNodeConfig:            k8sapi.CreateDefaultConfig(),
-		KubeadmConfig:            kubeadm.CreateDefaultConfig(),
-		AkamaiConfig:             akamai.CreateDefaultConfig(),
-		ScalewayConfig:           scaleway.CreateDefaultConfig(),
-		TencentCVMConfig:         tencentcvm.CreateDefaultConfig(),
-		UpcloudConfig:            upcloud.CreateDefaultConfig(),
-		VultrConfig:              vultr.CreateDefaultConfig(),
+		AlibabaECSConfig:                   alibabaecs.CreateDefaultConfig(),
+		EC2Config:                          ec2.CreateDefaultConfig(),
+		ECSConfig:                          ecs.CreateDefaultConfig(),
+		EKSConfig:                          eks.CreateDefaultConfig(),
+		ElasticbeanstalkConfig:             elasticbeanstalk.CreateDefaultConfig(),
+		EnvConfig:                          env.CreateDefaultConfig(),
+		LambdaConfig:                       lambda.CreateDefaultConfig(),
+		AzureConfig:                        azure.CreateDefaultConfig(),
+		AksConfig:                          aks.CreateDefaultConfig(),
+		AzureAppServiceConfig:              appservice.CreateDefaultConfig(),
+		DeprecatedAzureAppServiceConfig:    appservice.CreateDefaultConfig(),
+		AzureContainerAppsConfig:           containerapps.CreateDefaultConfig(),
+		DeprecatedAzureContainerAppsConfig: containerapps.CreateDefaultConfig(),
+		AzureFunctionsConfig:               functions.CreateDefaultConfig(),
+		DeprecatedAzureFunctionsConfig:     functions.CreateDefaultConfig(),
+		ConsulConfig:                       consul.CreateDefaultConfig(),
+		DigitalOceanConfig:                 digitalocean.CreateDefaultConfig(),
+		DockerConfig:                       docker.CreateDefaultConfig(),
+		GcpConfig:                          gcp.CreateDefaultConfig(),
+		HerokuConfig:                       heroku.CreateDefaultConfig(),
+		HetznerConfig:                      hetzner.CreateDefaultConfig(),
+		IBMCloudClassicConfig:              ibmcloudclassic.CreateDefaultConfig(),
+		IBMCloudVPCConfig:                  ibmcloudvpc.CreateDefaultConfig(),
+		SystemConfig:                       system.CreateDefaultConfig(),
+		OpenShiftConfig:                    openshift.CreateDefaultConfig(),
+		OpenStackNovaConfig:                nova.CreateDefaultConfig(),
+		OracleCloudConfig:                  oraclecloud.CreateDefaultConfig(),
+		DeprecatedOracleCloudConfig:        oraclecloud.CreateDefaultConfig(),
+		K8SAPIConfig:                       k8sapi.CreateDefaultConfig(),
+		K8SNodeConfig:                      k8sapi.CreateDefaultConfig(),
+		KubeadmConfig:                      kubeadm.CreateDefaultConfig(),
+		AkamaiConfig:                       akamai.CreateDefaultConfig(),
+		ScalewayConfig:                     scaleway.CreateDefaultConfig(),
+		TencentCVMConfig:                   tencentcvm.CreateDefaultConfig(),
+		UpcloudConfig:                      upcloud.CreateDefaultConfig(),
+		VultrConfig:                        vultr.CreateDefaultConfig(),
 	}
 }
 
@@ -239,10 +295,16 @@ func (d *DetectorConfig) GetConfigFromType(detectorType internal.DetectorType) i
 		return d.AksConfig
 	case appservice.TypeStr:
 		return d.AzureAppServiceConfig
+	case appservice.TypeStrAlias: //nolint:staticcheck
+		return d.DeprecatedAzureAppServiceConfig
 	case containerapps.TypeStr:
 		return d.AzureContainerAppsConfig
+	case containerapps.TypeStrAlias: //nolint:staticcheck
+		return d.DeprecatedAzureContainerAppsConfig
 	case functions.TypeStr:
 		return d.AzureFunctionsConfig
+	case functions.TypeStrAlias: //nolint:staticcheck
+		return d.DeprecatedAzureFunctionsConfig
 	case consul.TypeStr:
 		return d.ConsulConfig
 	case digitalocean.TypeStr:
@@ -269,6 +331,8 @@ func (d *DetectorConfig) GetConfigFromType(detectorType internal.DetectorType) i
 		return d.OpenStackNovaConfig
 	case oraclecloud.TypeStr:
 		return d.OracleCloudConfig
+	case oraclecloud.TypeStrAlias: //nolint:staticcheck
+		return d.DeprecatedOracleCloudConfig
 	case k8sapi.TypeStr:
 		return d.K8SAPIConfig
 	case k8sapi.TypeStrAlias:

@@ -626,8 +626,8 @@ The list of the populated resource attributes can be found at [Azure Container A
 Example:
 ```yaml
 processors:
-  resourcedetection/azurecontainerapps:
-    detectors: [env, azurecontainerapps]
+  resourcedetection/azure_container_apps:
+    detectors: [env, azure_container_apps]
     timeout: 2s
     override: false
 ```
@@ -645,8 +645,8 @@ The list of the populated resource attributes can be found at [Azure App Service
 Example:
 ```yaml
 processors:
-  resourcedetection/azureappservice:
-    detectors: [env, azureappservice]
+  resourcedetection/azure_app_service:
+    detectors: [env, azure_app_service]
     timeout: 2s
     override: false
 ```
@@ -662,8 +662,8 @@ The list of populated resource attributes can be found at [Azure Functions Detec
 Example:
 ```yaml
 processors:
-  resourcedetection/azurefunctions:
-    detectors: [env, azurefunctions]
+  resourcedetection/azure_functions:
+    detectors: [env, azure_functions]
     timeout: 2s
     override: false
 ```
@@ -749,8 +749,8 @@ Example:
 
 ```yaml
 processors:
-  resource_detection/oraclecloud:
-    detectors: [env, oraclecloud]
+  resource_detection/oracle_cloud:
+    detectors: [env, oracle_cloud]
     timeout: 2s
     override: false
 ```
@@ -1149,7 +1149,7 @@ processors:
 ## Configuration
 
 ```yaml
-# a list of resource detectors to run, valid options are: "env", "system", "gcp", "ec2", "ecs", "elastic_beanstalk", "eks", "lambda", "azure", "aks", "azureappservice", "azurecontainerapps", "azurefunctions", "heroku", "openshift", "dynatrace", "consul", "docker", "k8s_api", "k8snode" (deprecated, use "k8s_api"), "kubeadm", "hetzner", "akamai", "scaleway", "vultr", "oraclecloud", "digitalocean", "nova", "upcloud", "alibaba_ecs", "tencent_cvm", "ibmcloud_vpc", "ibmcloud_classic"
+# a list of resource detectors to run, valid options are: "env", "system", "gcp", "ec2", "ecs", "elastic_beanstalk", "eks", "lambda", "azure", "aks", "azure_app_service", "azure_container_apps", "azure_functions", "heroku", "openshift", "dynatrace", "consul", "docker", "k8s_api", "k8snode" (deprecated, use "k8s_api"), "kubeadm", "hetzner", "akamai", "scaleway", "vultr", "oracle_cloud", "digitalocean", "nova", "upcloud", "alibaba_ecs", "tencent_cvm", "ibmcloud_vpc", "ibmcloud_classic"
 detectors: [ <string> ]
 # determines if existing resource attributes should be overridden or preserved, defaults to true
 override: <bool>
@@ -1185,9 +1185,9 @@ table. Positive tags without the removal tag do not trim the default build. Exis
 | `aks` | `enable_detector_azure_aks` |
 | `alibaba_ecs` | `enable_detector_alibaba_ecs` |
 | `azure` | `enable_detector_azure` |
-| `azureappservice` | `enable_detector_azure_appservice` |
-| `azurecontainerapps` | `enable_detector_azure_containerapps` |
-| `azurefunctions` | `enable_detector_azure_functions` |
+| `azure_app_service` | `enable_detector_azure_appservice` |
+| `azure_container_apps` | `enable_detector_azure_containerapps` |
+| `azure_functions` | `enable_detector_azure_functions` |
 | `consul` | `enable_detector_consul` |
 | `digitalocean` | `enable_detector_digitalocean` |
 | `docker` | `enable_detector_docker` |
@@ -1207,16 +1207,12 @@ table. Positive tags without the removal tag do not trim the default build. Exis
 | `lambda` | `enable_detector_aws_lambda` |
 | `nova` | `enable_detector_openstack_nova` |
 | `openshift` | `enable_detector_openshift` |
-| `oraclecloud` | `enable_detector_oraclecloud` |
+| `oracle_cloud` | `enable_detector_oraclecloud` |
 | `scaleway` | `enable_detector_scaleway` |
 | `system` | `enable_detector_system` |
 | `tencent_cvm` | `enable_detector_tencent_cvm` |
 | `upcloud` | `enable_detector_upcloud` |
 | `vultr` | `enable_detector_vultr` |
-
-The deprecated `k8snode` detector alias is compiled by
-`enable_detector_k8s_api`; it has no separate opt-in tag. The
-`elastic_beanstalk` detector uses the `elasticbeanstalk` configuration block.
 
 The factory default is `detectors: [env]`. A trimmed build that does not include the
 `env` tag must explicitly configure its compiled detector list. A binary built with only

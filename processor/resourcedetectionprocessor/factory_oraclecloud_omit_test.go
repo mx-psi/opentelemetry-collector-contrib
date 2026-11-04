@@ -19,9 +19,9 @@ import (
 func TestOmittedOracleCloudDetectorRejectsConfiguration(t *testing.T) {
 	factory := NewFactory()
 	cfg := factory.CreateDefaultConfig()
-	cfg.(*Config).Detectors = []string{"oraclecloud"}
+	cfg.(*Config).Detectors = []string{"oracle_cloud"}
 
 	tp, err := factory.CreateTraces(t.Context(), processortest.NewNopSettings(metadata.Type), cfg, consumertest.NewNop())
-	require.ErrorContains(t, err, `detector "oraclecloud" is not compiled into this binary`)
+	require.ErrorContains(t, err, `detector "oracle_cloud" is not compiled into this binary`)
 	assert.Nil(t, tp)
 }

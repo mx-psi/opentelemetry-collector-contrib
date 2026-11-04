@@ -32,10 +32,10 @@ func TestTrimmedBuildCreatesProcessorWithoutDetectors(t *testing.T) {
 
 func TestTrimmedBuildRejectsDetectorThatIsNotCompiled(t *testing.T) {
 	allDetectorTypes := []internal.DetectorType{
-		"akamai", "aks", "alibaba_ecs", "azure", "azureappservice", "azurecontainerapps", "azurefunctions", "consul", "digitalocean", "docker",
+		"akamai", "aks", "alibaba_ecs", "azure", "azure_app_service", "azure_container_apps", "azure_functions", "consul", "digitalocean", "docker",
 		"dynatrace", "ec2", "ecs", "eks", "elastic_beanstalk", "env", "gcp", "heroku", "hetzner",
 		"ibmcloud_classic", "ibmcloud_vpc", "k8s_api", "kubeadm", "lambda", "nova", "openshift",
-		"oraclecloud", "scaleway", "system", "tencent_cvm", "upcloud", "vultr",
+		"oracle_cloud", "scaleway", "system", "tencent_cvm", "upcloud", "vultr",
 	}
 
 	compiledDetectors := internal.NewProviderFactory(detectorFactories()).CompiledDetectorTypes()

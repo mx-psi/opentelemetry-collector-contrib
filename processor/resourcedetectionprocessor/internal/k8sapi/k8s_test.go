@@ -283,19 +283,3 @@ func TestNewDetectorErrors(t *testing.T) {
 		assert.Nil(t, d)
 	})
 }
-
-func TestNewDeprecatedDetector(t *testing.T) {
-	cfg := CreateDefaultConfig()
-	cfg.APIConfig.AuthType = k8sconfigtypes.AuthTypeNone
-	t.Setenv("KUBERNETES_SERVICE_HOST", "127.0.0.1")
-	t.Setenv("KUBERNETES_SERVICE_PORT", "6443")
-	t.Setenv("K8S_NODE_NAME", "mainNode")
-
-	core, logs := observer.New(zapcore.WarnLevel)
-	set := processortest.NewNopSettings(processortest.NopType)
-	set.Logger = zap.New(core)
-	d, err := NewDeprecatedDetector(set, cfg, false)
-	require.NoError(t, err)
-	assert.NotNil(t, d)
-	require.Equal(t, 1, logs.FilterMessageSnippet("k8snode detector name is deprecated").Len())
-}

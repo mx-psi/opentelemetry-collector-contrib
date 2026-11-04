@@ -462,12 +462,41 @@ func TestWarnDeprecatedPerDetectorFlags_NoWarningWhenNoneSet(t *testing.T) {
 	assert.Equal(t, 0, logs.Len(), "no warning should be emitted when no per-detector flags are set")
 }
 
+func TestDeprecatedElasticBeanstalkConfigKeyWarning(t *testing.T) {
+	for _, tt := range []struct {
+		name      string
+		deprecate bool
+		wantLogs  int
+	}{
+		{name: "new key", deprecate: false, wantLogs: 0},
+		{name: "deprecated key", deprecate: true, wantLogs: 1},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			logger, logs := newObservedLogger()
+			set := processortest.NewNopSettings(metadata.Type)
+			set.Logger = logger
+			cfg := createDefaultConfig().(*Config)
+			if tt.deprecate {
+				ebCfg := cfg.DetectorConfig.ElasticbeanstalkConfig
+				cfg.DetectorConfig.DeprecatedElasticbeanstalkConfig = &ebCfg
+			}
+
+			_, err := NewFactory().CreateTraces(t.Context(), set, cfg, consumertest.NewNop())
+			require.NoError(t, err)
+			assert.Equal(t, tt.wantLogs, logs.FilterMessageSnippet("elasticbeanstalk configuration key is deprecated").Len())
+		})
+	}
+}
+
 func TestDefaultDetectorRegistry(t *testing.T) {
 	expectedTypes := []string{
 		"akamai",
 		"alibaba_ecs",
 		"aks",
 		"azure",
+		"azure_app_service",
+		"azure_container_apps",
+		"azure_functions",
 		"azureappservice",
 		"azurecontainerapps",
 		"azurefunctions",
@@ -491,6 +520,7 @@ func TestDefaultDetectorRegistry(t *testing.T) {
 		"lambda",
 		"nova",
 		"openshift",
+		"oracle_cloud",
 		"oraclecloud",
 		"scaleway",
 		"system",

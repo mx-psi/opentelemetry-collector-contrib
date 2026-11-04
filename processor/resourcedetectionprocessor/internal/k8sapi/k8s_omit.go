@@ -9,6 +9,3 @@ import "github.com/open-telemetry/opentelemetry-collector-contrib/processor/reso
 
 // NewDetector is unavailable when this detector is excluded at build time.
 var NewDetector internal.DetectorFactory
-
-// NewDeprecatedDetector is unavailable when this detector is excluded at build time.
-var NewDeprecatedDetector internal.DetectorFactory
