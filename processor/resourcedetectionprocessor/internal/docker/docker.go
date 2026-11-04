@@ -57,7 +57,7 @@ func (d *Detector) Detect(ctx context.Context) (resource pcommon.Resource, schem
 			d.logger.Debug("docker metadata unavailable", zap.Error(err))
 			return pcommon.NewResource(), "", nil
 		}
-		d.rb.SetOsType(osType)
+		d.rb.SetOsType(internal.SemconvOSType(osType))
 	}
 
 	if d.cfg.HostName.Enabled {

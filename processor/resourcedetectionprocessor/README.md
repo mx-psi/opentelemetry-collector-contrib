@@ -61,6 +61,22 @@ processors:
       max_elapsed_time: 2m
 ```
 
+## Semantic convention value fixes
+
+Some detectors emit attribute values that do not match the semantic conventions:
+
+| Attribute | Detector | Default | With the gate enabled |
+| --------- | -------- | ------- | --------------------- |
+| `faas.max_memory` | `lambda` | string | int |
+| `gcp.cloud_run.job.task_index` | `gcp` | string | int |
+| `os.type` | `system`, `docker` | `z_os` (deprecated) | `zos` |
+
+Enable the `processor.resource_detection.SemconvValueFixes` feature gate to emit the semantic convention values:
+
+```shell
+otelcol --feature-gates=processor.resource_detection.SemconvValueFixes
+```
+
 ## Supported detectors
 
 ### Environment Variable

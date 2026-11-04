@@ -84,5 +84,7 @@ func (d *detector) Detect(_ context.Context) (resource pcommon.Resource, schemaU
 		d.rb.SetAwsLogStreamNames([]any{value})
 	}
 
-	return d.rb.Emit(), conventions.SchemaURL, nil
+	res := d.rb.Emit()
+	internal.SemconvIntAttribute(res.Attributes(), string(conventions.FaaSMaxMemoryKey))
+	return res, conventions.SchemaURL, nil
 }

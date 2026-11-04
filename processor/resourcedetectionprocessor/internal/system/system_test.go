@@ -17,8 +17,10 @@ import (
 	"go.opentelemetry.io/collector/processor/processortest"
 	"go.uber.org/zap"
 
+	"github.com/open-telemetry/opentelemetry-collector-contrib/internal/common/testutil"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/internal/metadataproviders/system"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal"
+	rdmetadata "github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/metadata"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/system/internal/metadata"
 )
 
@@ -696,4 +698,29 @@ func TestValidate(t *testing.T) {
 
 func TestCreateDefaultConfig(t *testing.T) {
 	assert.Equal(t, Config{ResourceAttributes: metadata.DefaultResourceAttributesConfig()}, CreateDefaultConfig())
+}
+
+func TestDetectOSTypeSemconvValueFixes(t *testing.T) {
+	for _, tc := range []struct {
+		enabled  bool
+		expected string
+	}{
+		{enabled: false, expected: "z_os"},
+		{enabled: true, expected: "zos"},
+	} {
+		t.Run(fmt.Sprintf("gate=%t", tc.enabled), func(t *testing.T) {
+			defer testutil.SetFeatureGateForTest(t, rdmetadata.ProcessorResourceDetectionSemconvValueFixesFeatureGate, tc.enabled)()
+			md := &mockMetadata{}
+			md.On("Hostname").Return("hostname", nil)
+			md.On("OSDescription").Return("z/OS", nil)
+			md.On("OSType").Return("z_os", nil)
+			md.On("OSVersion").Return("3.1", nil)
+			md.On("HostArch").Return("s390x", nil)
+
+			detector := newTestDetector(md, []string{"os"}, metadata.DefaultResourceAttributesConfig())
+			res, _, err := detector.Detect(t.Context())
+			require.NoError(t, err)
+			assert.Equal(t, tc.expected, res.Attributes().AsRaw()["os.type"])
+		})
+	}
 }

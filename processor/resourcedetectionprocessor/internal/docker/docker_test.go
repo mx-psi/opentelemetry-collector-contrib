@@ -5,6 +5,7 @@ package docker
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/moby/moby/api/types/container"
@@ -13,7 +14,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/collector/processor/processortest"
 
+	"github.com/open-telemetry/opentelemetry-collector-contrib/internal/common/testutil"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/internal/metadataproviders/docker"
+	rdmetadata "github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/metadata"
 )
 
 var _ docker.Provider = (*mockMetadata)(nil)
@@ -104,4 +107,28 @@ func TestDetectSkipsDisabledResourceAttributes(t *testing.T) {
 	md.AssertNotCalled(t, "OSType")
 	md.AssertNotCalled(t, "ContainerInfo")
 	assert.Empty(t, res.Attributes().AsRaw())
+}
+
+func TestDetectOSTypeSemconvValueFixes(t *testing.T) {
+	for _, tc := range []struct {
+		enabled  bool
+		expected string
+	}{
+		{enabled: false, expected: "z_os"},
+		{enabled: true, expected: "zos"},
+	} {
+		t.Run(fmt.Sprintf("gate=%t", tc.enabled), func(t *testing.T) {
+			defer testutil.SetFeatureGateForTest(t, rdmetadata.ProcessorResourceDetectionSemconvValueFixesFeatureGate, tc.enabled)()
+			md := &mockMetadata{}
+			md.On("Hostname").Return("hostname", nil)
+			md.On("OSType").Return("z_os", nil)
+
+			detector, err := NewDetector(processortest.NewNopSettings(processortest.NopType), CreateDefaultConfig(), false)
+			require.NoError(t, err)
+			detector.(*Detector).provider = md
+			res, _, err := detector.Detect(t.Context())
+			require.NoError(t, err)
+			assert.Equal(t, tc.expected, res.Attributes().AsRaw()["os.type"])
+		})
+	}
 }

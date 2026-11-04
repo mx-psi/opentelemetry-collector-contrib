@@ -215,7 +215,9 @@ func (d *detector) Detect(ctx context.Context) (resource pcommon.Resource, schem
 	if errs != nil && d.failOnMissingMetadata {
 		return pcommon.NewResource(), "", errs
 	}
-	return d.rb.Emit(), conventions.SchemaURL, nil
+	res := d.rb.Emit()
+	internal.SemconvIntAttribute(res.Attributes(), string(conventions.GCPCloudRunJobTaskIndexKey))
+	return res, conventions.SchemaURL, nil
 }
 
 func (d *detector) onBareMetalSolution() bool {

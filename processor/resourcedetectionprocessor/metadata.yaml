@@ -12,6 +12,16 @@ status:
     active: [Aneurysm9, dashpole, paulojmdias]
     seeking_new: true
 
+feature_gates:
+  - id: processor.resource_detection.SemconvValueFixes
+    stage: alpha
+    description: >-
+      When enabled, the lambda and gcp detectors emit `faas.max_memory` and `gcp.cloud_run.job.task_index`
+      as integers, and the system and docker detectors emit `os.type` as `zos` instead of the deprecated
+      `z_os`, as the semantic conventions define.
+    from_version: v0.165.0
+    reference_url: https://github.com/open-telemetry/opentelemetry-collector-contrib/issues/44553
+
 attributes:
   detector:
     description: The resource detector that produced the result.

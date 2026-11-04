@@ -6,6 +6,7 @@ package gcp // import "github.com/open-telemetry/opentelemetry-collector-contrib
 import (
 	"context"
 	"errors"
+	"fmt"
 	"regexp"
 	"testing"
 
@@ -15,8 +16,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
 
+	"github.com/open-telemetry/opentelemetry-collector-contrib/internal/common/testutil"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal"
 	localMetadata "github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/gcp/internal/metadata"
+	rdmetadata "github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/metadata"
 )
 
 type mockInstancesClient struct {
@@ -885,6 +888,28 @@ func TestCompileLabelRegexes(t *testing.T) {
 				assert.NoError(t, err)
 				assert.Len(t, regexes, len(tt.labels))
 			}
+		})
+	}
+}
+
+func TestDetectCloudRunJobTaskIndexSemconvValueFixes(t *testing.T) {
+	for _, tc := range []struct {
+		enabled  bool
+		expected any
+	}{
+		{enabled: false, expected: "2"},
+		{enabled: true, expected: int64(2)},
+	} {
+		t.Run(fmt.Sprintf("gate=%t", tc.enabled), func(t *testing.T) {
+			defer testutil.SetFeatureGateForTest(t, rdmetadata.ProcessorResourceDetectionSemconvValueFixesFeatureGate, tc.enabled)()
+			d := newTestDetector(&fakeGCPDetector{
+				projectID:               "my-project",
+				cloudPlatform:           gcp.CloudRunJob,
+				gcpCloudRunJobTaskIndex: "2",
+			})
+			res, _, err := d.Detect(t.Context())
+			require.NoError(t, err)
+			assert.Equal(t, tc.expected, res.Attributes().AsRaw()["gcp.cloud_run.job.task_index"])
 		})
 	}
 }

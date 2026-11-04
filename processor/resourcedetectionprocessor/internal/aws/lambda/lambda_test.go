@@ -4,11 +4,15 @@
 package lambda
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/collector/processor/processortest"
+
+	"github.com/open-telemetry/opentelemetry-collector-contrib/internal/common/testutil"
+	rdmetadata "github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourcedetectionprocessor/internal/metadata"
 )
 
 // Tests Lambda resource detector running in Lambda environment
@@ -91,4 +95,28 @@ func TestNotLambdaFailOnMissingMetadata(t *testing.T) {
 	require.EqualError(t, err, "lambda metadata unavailable: AWS_LAMBDA_FUNCTION_NAME env var not set")
 	assert.Empty(t, schemaURL)
 	assert.Equal(t, 0, res.Attributes().Len())
+}
+
+func TestLambdaMaxMemorySemconvValueFixes(t *testing.T) {
+	t.Setenv(awsLambdaFunctionNameEnvVar, "TestFunctionName")
+	t.Setenv(awsLambdaFunctionMemorySizeEnvVar, "128")
+
+	for _, tc := range []struct {
+		enabled  bool
+		expected any
+	}{
+		{enabled: false, expected: "128"},
+		{enabled: true, expected: int64(128)},
+	} {
+		t.Run(fmt.Sprintf("gate=%t", tc.enabled), func(t *testing.T) {
+			defer testutil.SetFeatureGateForTest(t, rdmetadata.ProcessorResourceDetectionSemconvValueFixesFeatureGate, tc.enabled)()
+			cfg := CreateDefaultConfig()
+			cfg.ResourceAttributes.FaasMaxMemory.Enabled = true
+			lambdaDetector, err := NewDetector(processortest.NewNopSettings(processortest.NopType), cfg, false)
+			require.NoError(t, err)
+			res, _, err := lambdaDetector.Detect(t.Context())
+			require.NoError(t, err)
+			assert.Equal(t, tc.expected, res.Attributes().AsRaw()["faas.max_memory"])
+		})
+	}
 }

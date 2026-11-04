@@ -138,7 +138,7 @@ func (d *Detector) Detect(ctx context.Context) (resource pcommon.Resource, schem
 		hostname, err = getHostFromSource(d)
 		if err == nil {
 			d.rb.SetHostName(hostname)
-			d.rb.SetOsType(osType)
+			d.rb.SetOsType(internal.SemconvOSType(osType))
 			d.rb.SetOsVersion(osVersion)
 			if d.cfg.ResourceAttributes.HostID.Enabled {
 				if hostID, hostIDErr := d.provider.HostID(ctx); hostIDErr == nil {
